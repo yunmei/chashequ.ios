@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YMGlobal.h"
+#import "SBJson.h"
 @interface ViewController : UIViewController
 
 @end
