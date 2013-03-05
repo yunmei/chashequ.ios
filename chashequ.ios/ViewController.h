@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "YMGlobal.h"
 #import "SBJson.h"
+#import "SlideViewController.h"
 @interface ViewController : UIViewController
+@property (strong, nonatomic) IBOutlet UIImageView *welcomImage;
 
 @end
