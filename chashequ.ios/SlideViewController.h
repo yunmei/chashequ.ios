@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SlideViewController : UIViewController
-
+@interface SlideViewController : UIViewController<UIScrollViewDelegate>
+@property (strong,nonatomic) UIScrollView *pageScroll;
+@property (strong,nonatomic) UIPageControl *pageControl;
+@property (strong,nonatomic) UIButton *gotoMainViewButton;
 @end
