@@ -19,18 +19,21 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     //下面代码用于判断程序是否第一次启动
-        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-        }
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
-            SlideViewController *slideView = [[SlideViewController alloc] init];
-            self.window.rootViewController = slideView;
-        }else {
-            ViewController *mainViewController = [[ViewController alloc] init];
-            self.window.rootViewController=mainViewController;     
-        }
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+    }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[SlideViewController alloc] initWithNibName:@"SlideViewController" bundle:nil]];
+        self.window.rootViewController = navController;
+        [navController setNavigationBarHidden:YES];
+    } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil]];
+        self.window.rootViewController = navController;
+        [navController setNavigationBarHidden:YES];
+    }
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
