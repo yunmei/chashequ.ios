@@ -11,4 +11,7 @@
 #import "SBJson.h"
 @interface ViewController : UIViewController
 
+@property (strong, nonatomic) UIImageView *pageControlView;
+@property (strong, nonatomic) UIButton *currentTabBtn;
+
 @end
