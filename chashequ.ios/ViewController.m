@@ -13,7 +13,6 @@
 @end
 
 @implementation ViewController
-@synthesize welcomImage;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -26,14 +25,7 @@
 }
 
 - (void)viewDidUnload {
-    [self setWelcomImage:nil];
     [super viewDidUnload];
 }
 
--(void)changeView
-{
-    SlideViewController *slide = [[SlideViewController alloc]init];
-    [self presentModalViewController:slide animated:NO];
-
-}
 @end
