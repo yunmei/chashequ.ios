@@ -23,8 +23,9 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
     }
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+        //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[SlideViewController alloc] initWithNibName:@"SlideViewController" bundle:nil]];
         self.window.rootViewController = navController;
         [navController setNavigationBarHidden:YES];

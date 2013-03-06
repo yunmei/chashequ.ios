@@ -10,6 +10,7 @@
 #import "MKNetworkEngine.h"
 #import "YMGlobal.h"
 #import "SBJson.h"
+#import "ViewController.h"
 @interface SlideViewController ()
 
 @end
@@ -17,6 +18,7 @@
 @implementation SlideViewController
 @synthesize pageControl = _pageControl;
 @synthesize pageScroll = _pageScroll;
+@synthesize gotoMainViewButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -30,7 +32,8 @@
 {
     [super viewDidLoad];
     [self.view addSubview:self.pageScroll];
-    
+    [self addImageToScrollView];
+    [self.view addSubview:self.pageControl];
     // Do any additional setup after loading the view from its nib.
 //    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getSlideshow",@"method", nil];
 //    MKNetworkOperation *op = [YMGlobal getOperation:params];
@@ -60,7 +63,7 @@
         _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(141, 424, 38, 36)];
     }
     _pageControl.numberOfPages = 3;
-    _pageControl.currentPage = 0;
+    _pageControl.currentPage = 0;  
     return _pageControl;
 }
 
@@ -70,9 +73,10 @@
     {
         _pageScroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width, self.view.frame.size.height)];
     }
-    [_pageScroll setContentSize:CGSizeMake(self.view.frame.size.width * 5 , self.view.frame.size.height)];
+    [_pageScroll setContentSize:CGSizeMake(self.view.frame.size.width * 3 , self.view.frame.size.height)];
     _pageScroll.delegate = self;
     _pageScroll.scrollEnabled = YES;
+    _pageScroll.pagingEnabled = YES;
     return  _pageScroll;
 }
 
@@ -80,6 +84,20 @@
 {
     CGFloat pageWidth = self.view.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth/2)/pageWidth) +1;
+    if(scrollView.contentOffset.x == pageWidth * 2)
+    {
+        self.gotoMainViewButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.gotoMainViewButton setTitle:@"立即体验" forState:UIControlStateNormal];
+        [self.gotoMainViewButton setFrame:CGRectMake(self.view.frame.size.width/2 - 25, self.view.frame.size.height/2 - 10, 50, 20)];
+        [self.view addSubview:self.gotoMainViewButton];
+        [self.gotoMainViewButton addTarget:self action:@selector(gotoMainView:) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [self.gotoMainViewButton removeFromSuperview];
+    }
+    if(scrollView.contentOffset.x > pageWidth*2)
+    {
+        [self gotoMainView];
+    }
     self.pageControl.currentPage = page;
 }
 
@@ -88,11 +106,23 @@
     UIImageView *imgView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     [imgView1 setImage:[UIImage imageNamed:@"slide1.png"]];
     UIImageView *imgView2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [imgView1 setImage:[UIImage imageNamed:@"slide2.png"]];
+    [imgView2 setImage:[UIImage imageNamed:@"slide2.png"]];
     UIImageView *imgView3 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width*2, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [imgView1 setImage:[UIImage imageNamed:@"slide3.png"]];
+    [imgView3 setImage:[UIImage imageNamed:@"slide3.png"]];
     [self.pageScroll addSubview:imgView1];
     [self.pageScroll addSubview:imgView2];
     [self.pageScroll addSubview:imgView3];
+}
+
+-(void)gotoMainView:(id)sender
+{
+    ViewController *mainView = [[ViewController alloc]init];
+    [self.navigationController pushViewController:mainView animated:YES];
+}
+
+-(void)gotoMainView
+{
+    ViewController *mainView = [[ViewController alloc]init];
+    [self.navigationController pushViewController:mainView animated:YES];
 }
 @end
