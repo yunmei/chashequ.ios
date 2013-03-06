@@ -29,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view addSubview:self.pageScroll];
+    
     // Do any additional setup after loading the view from its nib.
 //    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getSlideshow",@"method", nil];
 //    MKNetworkOperation *op = [YMGlobal getOperation:params];
@@ -70,11 +72,27 @@
     }
     [_pageScroll setContentSize:CGSizeMake(self.view.frame.size.width * 5 , self.view.frame.size.height)];
     _pageScroll.delegate = self;
+    _pageScroll.scrollEnabled = YES;
     return  _pageScroll;
 }
 
-//-(void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    CGFloat pageWidth = self.view 
-//}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat pageWidth = self.view.frame.size.width;
+    int page = floor((scrollView.contentOffset.x - pageWidth/2)/pageWidth) +1;
+    self.pageControl.currentPage = page;
+}
+
+-(void)addImageToScrollView
+{
+    UIImageView *imgView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [imgView1 setImage:[UIImage imageNamed:@"slide1.png"]];
+    UIImageView *imgView2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [imgView1 setImage:[UIImage imageNamed:@"slide2.png"]];
+    UIImageView *imgView3 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width*2, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    [imgView1 setImage:[UIImage imageNamed:@"slide3.png"]];
+    [self.pageScroll addSubview:imgView1];
+    [self.pageScroll addSubview:imgView2];
+    [self.pageScroll addSubview:imgView3];
+}
 @end
