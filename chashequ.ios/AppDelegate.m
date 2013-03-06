@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 #import "ViewController.h"
-
+#import "SlideViewController.h"
 @implementation AppDelegate
 @synthesize appEngine;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -18,8 +18,19 @@
     [self.appEngine useCache];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
+    //下面代码用于判断程序是否第一次启动
+        if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
+        }
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
+            SlideViewController *slideView = [[SlideViewController alloc] init];
+            self.window.rootViewController = slideView;
+        }else {
+            ViewController *mainViewController = [[ViewController alloc] init];
+            self.window.rootViewController=mainViewController;     
+        }
     [self.window makeKeyAndVisible];
     return YES;
 }
