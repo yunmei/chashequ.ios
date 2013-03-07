@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self.contentScrollView setFrame:CGRectMake(0, 0, 320, 415)];
+    //[self.contentScrollView setFrame:CGRectMake(0, 0, 320, 415)];
     [self.view addGestureRecognizer:self.swipeGesture];
     //生成底部返回和分享按钮
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -50,7 +50,7 @@
     //生成头部绿色背景
     self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 120)];
     [self.headerView setBackgroundColor:[UIColor colorWithRed:61.0/255.0 green:157.0/255.0 blue:1.0/255.0 alpha:1.0]];
-    [self.view addSubview:self.headerView];
+    [self.contentScrollView addSubview:self.headerView];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getNewsContent",@"method",self.zixunId,@"id", nil];
     MKNetworkOperation *op = [YMGlobal getOperation:params];
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
@@ -74,14 +74,14 @@
                 self.contentTitleLable.backgroundColor = [UIColor clearColor];
                 [self.contentTitleLable setFont:[UIFont systemFontOfSize:22.0]];
                 [self.contentTitleLable setTextColor:[UIColor whiteColor]];
-                [self.view addSubview:self.contentTitleLable];
+                [self.contentScrollView addSubview:self.contentTitleLable];
                 //设置来源，作者，发表时间
                 self.detailLable = [[UILabel alloc]initWithFrame:CGRectMake(20, height+40, 280, 20)];
                 [self.detailLable setFont:[UIFont systemFontOfSize:14.0]];
                 [self.detailLable setText:[NSString stringWithFormat:@"%@   %@    %@",[data objectForKey:@"source"],[data objectForKey:@"author"],[data objectForKey:@"create_time"]]];
                 [self.detailLable setBackgroundColor:[UIColor clearColor]];
                 [self.detailLable setTextColor:[UIColor whiteColor]];
-                [self.view addSubview:self.detailLable];
+                [self.contentScrollView addSubview:self.detailLable];
             }
             if(content)
             {
