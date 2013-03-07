@@ -23,7 +23,9 @@
 @synthesize currentTabBtn;
 @synthesize tabScrollView;
 @synthesize refreshTableView2;
-
+@synthesize refreshTableView3;
+@synthesize refreshTableView4;
+@synthesize refreshTableView5;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,10 +48,10 @@
     [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
     [self.tabScrollView addSubview:testBtn];
     
-    self.refreshTableView2.delegate = self;
-    self.refreshTableView2.dataSource = self;
     [self.tabScrollView addSubview:self.refreshTableView2];
-    
+    [self.tabScrollView addSubview:self.refreshTableView3];
+    [self.tabScrollView addSubview:self.refreshTableView4];
+    [self.tabScrollView addSubview:self.refreshTableView5];
     [self.tabScrollView setDelegate:self];
     [self.view addSubview:self.tabScrollView];
     
@@ -135,9 +137,12 @@
     }
 }
 
-// 
+// UITableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (tableView.tag == 1) {
+        return 6;
+    }
     return 10;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -190,6 +195,9 @@
     [self setCurrentTabBtn:nil];
     [self setTabScrollView:nil];
     [self setRefreshTableView2:nil];
+    [self setRefreshTableView3:nil];
+    [self setRefreshTableView4:nil];
+    [self setRefreshTableView5:nil];
     [super viewDidUnload];
 }
 - (void)goToContent:(id)sender
@@ -297,8 +305,46 @@
         refreshTableView2 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(320, 0, 320, 414)];
         [refreshTableView2 setRowHeight:94.0];
         [refreshTableView2 setBackgroundColor:[UIColor redColor]];
+        refreshTableView2.delegate = self;
+        refreshTableView2.dataSource = self;
         refreshTableView2.tag = 2;
     }
     return refreshTableView2;
+}
+- (PullToRefreshTableView *)refreshTableView3
+{
+    if (refreshTableView3 == nil) {
+        refreshTableView3 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(640, 0, 320, 414)];
+        [refreshTableView3 setRowHeight:94.0];
+        [refreshTableView3 setBackgroundColor:[UIColor blueColor]];
+        refreshTableView3.delegate = self;
+        refreshTableView3.dataSource = self;
+        refreshTableView3.tag = 3;
+    }
+    return refreshTableView3;
+}
+- (PullToRefreshTableView *)refreshTableView4
+{
+    if (refreshTableView4 == nil) {
+        refreshTableView4 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(960, 0, 320, 414)];
+        [refreshTableView4 setRowHeight:94.0];
+        [refreshTableView4 setBackgroundColor:[UIColor yellowColor]];
+        refreshTableView4.delegate = self;
+        refreshTableView4.dataSource = self;
+        refreshTableView4.tag = 4;
+    }
+    return refreshTableView4;
+}
+- (PullToRefreshTableView *)refreshTableView5
+{
+    if (refreshTableView5 == nil) {
+        refreshTableView5 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(1280, 0, 320, 414)];
+        [refreshTableView5 setRowHeight:94.0];
+        [refreshTableView5 setBackgroundColor:[UIColor blackColor]];
+        refreshTableView5.delegate = self;
+        refreshTableView5.dataSource = self;
+        refreshTableView5.tag = 5;
+    }
+    return refreshTableView5;
 }
 @end

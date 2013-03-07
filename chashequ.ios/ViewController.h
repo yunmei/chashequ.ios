@@ -24,5 +24,7 @@
 @property (strong, nonatomic) UIScrollView *tabScrollView;
 
 @property (strong, nonatomic) PullToRefreshTableView *refreshTableView2;
-
+@property (strong, nonatomic) PullToRefreshTableView *refreshTableView3;
+@property (strong, nonatomic) PullToRefreshTableView *refreshTableView4;
+@property (strong, nonatomic) PullToRefreshTableView *refreshTableView5;
 @end
