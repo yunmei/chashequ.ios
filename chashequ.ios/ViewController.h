@@ -9,12 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "YMGlobal.h"
 #import "SBJson.h"
-<<<<<<< HEAD
 #import "ZixunContentViewController.h"
-@interface ViewController : UIViewController
-=======
+
 @interface ViewController : UIViewController<UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
->>>>>>> 完成首页左右移动效果
 
 @property (strong, nonatomic) UIButton *btnTab1;
 @property (strong, nonatomic) UIButton *btnTab2;

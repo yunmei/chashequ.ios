@@ -31,59 +31,6 @@
     [self.view addSubview:self.pageControlView];
     
     // 创建TabButton
-<<<<<<< HEAD
-    UIButton *btnTab1 = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 64, 42)];
-    [btnTab1 setTag:1];
-    [btnTab1 setTitle:@"头条" forState:UIControlStateNormal];
-    [btnTab1.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [btnTab1 setTitleColor:[UIColor colorWithRed:61/255.0 green:157/255.0 blue:1/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [btnTab1 setBackgroundImage:[UIImage imageNamed:@"btn_bg"] forState:UIControlStateNormal];
-    [btnTab1 addTarget:self action:@selector(changeType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnTab1];
-    self.currentTabBtn = btnTab1;
-    
-    UIButton *btnTab2 = [[UIButton alloc]initWithFrame:CGRectMake(65, 0, 64, 42)];
-    [btnTab2 setTag:2];
-    [btnTab2 setTitle:@"资讯" forState:UIControlStateNormal];
-    [btnTab2.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [btnTab2 setTitleColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [btnTab2 setBackgroundImage:[UIImage imageNamed:@"btn_bg"] forState:UIControlStateNormal];
-    [btnTab2 addTarget:self action:@selector(changeType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnTab2];
-    
-    UIButton *btnTab3 = [[UIButton alloc]initWithFrame:CGRectMake(129, 0, 64, 42)];
-    [btnTab3 setTag:3];
-    [btnTab3 setTitle:@"经营" forState:UIControlStateNormal];
-    [btnTab3.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [btnTab3 setTitleColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [btnTab3 setBackgroundImage:[UIImage imageNamed:@"btn_bg"] forState:UIControlStateNormal];
-    [btnTab3 addTarget:self action:@selector(changeType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnTab3];
-    
-    UIButton *btnTab4 = [[UIButton alloc]initWithFrame:CGRectMake(193, 0, 64, 42)];
-    [btnTab4 setTag:4];
-    [btnTab4 setTitle:@"茶百科" forState:UIControlStateNormal];
-    [btnTab4.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [btnTab4 setTitleColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [btnTab4 setBackgroundImage:[UIImage imageNamed:@"btn_bg"] forState:UIControlStateNormal];
-    [btnTab4 addTarget:self action:@selector(changeType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnTab4];
-    
-    UIButton *btnTab5 = [[UIButton alloc]initWithFrame:CGRectMake(257, 0, 64, 42)];
-    [btnTab5 setTag:5];
-    [btnTab5 setTitle:@"数据" forState:UIControlStateNormal];
-    [btnTab5.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-    [btnTab5 setTitleColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0] forState:UIControlStateNormal];
-    [btnTab5 setBackgroundImage:[UIImage imageNamed:@"btn_bg"] forState:UIControlStateNormal];
-    [btnTab5 addTarget:self action:@selector(changeType:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnTab5];
-    //test
-    UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [testBtn setFrame:CGRectMake(300, 300, 20, 20)];
-    [self.view addSubview:testBtn];
-    [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
-=======
-    
     [self.view addSubview:self.btnTab1];
     self.currentTabBtn = self.btnTab1;
     [self.view addSubview:self.btnTab2];
@@ -92,9 +39,10 @@
     [self.view addSubview:self.btnTab5];
     
     // ScrollView显示
-    UILabel *testLabel = [[UILabel alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];
-    testLabel.text = @"abc1";
-    [self.tabScrollView addSubview:testLabel];
+    UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [testBtn setFrame:CGRectMake(300, 300, 20, 20)];
+    [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
+    [self.tabScrollView addSubview:testBtn];
     [self.tabScrollView setDelegate:self];
     [self.view addSubview:self.tabScrollView];
 }
@@ -135,7 +83,6 @@
                 break;
         }
     }
->>>>>>> 完成首页左右移动效果
 }
 
 // 分类切换操作
@@ -169,6 +116,12 @@
     [self setCurrentTabBtn:nil];
     [self setTabScrollView:nil];
     [super viewDidUnload];
+}
+- (void)goToContent:(id)sender
+{
+    ZixunContentViewController *zixunContentView = [[ZixunContentViewController alloc]init];
+    zixunContentView.zixunId = @"1";
+    [self.navigationController pushViewController:zixunContentView animated:YES];
 }
 
 // 初始化操作
@@ -252,14 +205,6 @@
     }
     return currentTabBtn;
 }
-<<<<<<< HEAD
-
-- (void)goToContent:(id)sender
-{
-    ZixunContentViewController *zixunContentView = [[ZixunContentViewController alloc]init];
-    zixunContentView.zixunId = @"1";
-    [self.navigationController pushViewController:zixunContentView animated:YES];
-=======
 - (UIScrollView *)tabScrollView
 {
     if (tabScrollView == nil) {
@@ -270,6 +215,5 @@
         tabScrollView.tag = 1;
     }
     return tabScrollView;
->>>>>>> 完成首页左右移动效果
 }
 @end
