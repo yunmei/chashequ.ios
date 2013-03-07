@@ -52,6 +52,8 @@
 		AA61EEB016E6E96C0027B4C7 /* slide2.png in Resources */ = {isa = PBXBuildFile; fileRef = AA61EEAF16E6E96C0027B4C7 /* slide2.png */; };
 		AA61EEB216E6E9710027B4C7 /* slide1.png in Resources */ = {isa = PBXBuildFile; fileRef = AA61EEB116E6E9710027B4C7 /* slide1.png */; };
 		AA61EEB416E6E97A0027B4C7 /* slide3.png in Resources */ = {isa = PBXBuildFile; fileRef = AA61EEB316E6E97A0027B4C7 /* slide3.png */; };
+		AA61EED616E7310B0027B4C7 /* ZixunContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA61EED416E7310B0027B4C7 /* ZixunContentViewController.m */; };
+		AA61EED716E7310B0027B4C7 /* ZixunContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA61EED516E7310B0027B4C7 /* ZixunContentViewController.xib */; };
 		AADB220716E6CCB100E4E20B /* wait568.png in Resources */ = {isa = PBXBuildFile; fileRef = AADB220616E6CCB100E4E20B /* wait568.png */; };
 		AADB220916E6CCB700E4E20B /* wait960.png in Resources */ = {isa = PBXBuildFile; fileRef = AADB220816E6CCB700E4E20B /* wait960.png */; };
 		AAF1356516E5CE20001BA678 /* SlideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAF1356316E5CE20001BA678 /* SlideViewController.m */; };
@@ -141,6 +143,9 @@
 		AA61EEAF16E6E96C0027B4C7 /* slide2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide2.png; sourceTree = "<group>"; };
 		AA61EEB116E6E9710027B4C7 /* slide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide1.png; sourceTree = "<group>"; };
 		AA61EEB316E6E97A0027B4C7 /* slide3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slide3.png; sourceTree = "<group>"; };
+		AA61EED316E7310B0027B4C7 /* ZixunContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZixunContentViewController.h; sourceTree = "<group>"; };
+		AA61EED416E7310B0027B4C7 /* ZixunContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZixunContentViewController.m; sourceTree = "<group>"; };
+		AA61EED516E7310B0027B4C7 /* ZixunContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZixunContentViewController.xib; sourceTree = "<group>"; };
 		AADB220616E6CCB100E4E20B /* wait568.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wait568.png; sourceTree = "<group>"; };
 		AADB220816E6CCB700E4E20B /* wait960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wait960.png; sourceTree = "<group>"; };
 		AAF1356216E5CE20001BA678 /* SlideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideViewController.h; sourceTree = "<group>"; };
@@ -210,6 +215,7 @@
 		46241E2A16E57A150081323C /* chashequ.ios */ = {
 			isa = PBXGroup;
 			children = (
+				AA61EED116E730E40027B4C7 /* Content */,
 				AAF1355A16E5C525001BA678 /* SlideShow */,
 				46241E3316E57A150081323C /* AppDelegate.h */,
 				46241E3416E57A150081323C /* AppDelegate.m */,
@@ -349,6 +355,16 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		AA61EED116E730E40027B4C7 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				AA61EED316E7310B0027B4C7 /* ZixunContentViewController.h */,
+				AA61EED416E7310B0027B4C7 /* ZixunContentViewController.m */,
+				AA61EED516E7310B0027B4C7 /* ZixunContentViewController.xib */,
+			);
+			name = Content;
+			sourceTree = "<group>";
+		};
 		AAF1355A16E5C525001BA678 /* SlideShow */ = {
 			isa = PBXGroup;
 			children = (
@@ -430,6 +446,7 @@
 				4683D56216E71ADE00D9DED6 /* btn_bg.png in Resources */,
 				4683D56316E71ADE00D9DED6 /* tab_bg.png in Resources */,
 				4683D56416E71ADE00D9DED6 /* page_control.png in Resources */,
+				AA61EED716E7310B0027B4C7 /* ZixunContentViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +485,7 @@
 				AA0C7A2B16E5A4400056803B /* YMGlobal.m in Sources */,
 				AAF1356516E5CE20001BA678 /* SlideViewController.m in Sources */,
 				AAF1358F16E5E8AF001BA678 /* ImageDownload.m in Sources */,
+				AA61EED616E7310B0027B4C7 /* ZixunContentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

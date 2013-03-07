@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "YMGlobal.h"
 #import "SBJson.h"
+#import "ZixunContentViewController.h"
 @interface ViewController : UIViewController
 
 @property (strong, nonatomic) UIImageView *pageControlView;

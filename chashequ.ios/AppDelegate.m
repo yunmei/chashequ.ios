@@ -14,27 +14,27 @@
 @synthesize appEngine;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"222");
     self.appEngine = [[MKNetworkEngine alloc]initWithHostName:API_HOSTNAME customHeaderFields:nil];
     [self.appEngine useCache];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    //下面代码用于判断程序是否第一次启动
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"everLaunched"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"everLaunched"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-    }
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunch"];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunch"]) {
-        //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunch"];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[SlideViewController alloc] initWithNibName:@"SlideViewController" bundle:nil]];
-        self.window.rootViewController = navController;
-        [navController setNavigationBarHidden:YES];
-    } else {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"systemVersion%@",[defaults objectForKey:@"systemVersion"]);
+    if([[defaults objectForKey:@"systemVersion"] isEqualToString:SYS_VERSION])
+    {
+        NSLog(@"不是第一次启动");
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil]];
         self.window.rootViewController = navController;
         [navController setNavigationBarHidden:YES];
+    }else{
+        NSLog(@"是第一次启动");
+        [defaults setObject:SYS_VERSION forKey:@"systemVersion"];
+        [defaults synchronize];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[SlideViewController alloc] initWithNibName:@"SlideViewController" bundle:nil]];
+        self.window.rootViewController = navController;
+        [navController setNavigationBarHidden:YES];
     }
-    
     [self.window makeKeyAndVisible];
     return YES;
 }

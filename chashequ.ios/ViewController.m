@@ -70,8 +70,11 @@
     [btnTab5 setBackgroundImage:[UIImage imageNamed:@"btn_bg"] forState:UIControlStateNormal];
     [btnTab5 addTarget:self action:@selector(changeType:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnTab5];
-    
-    
+    //test
+    UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [testBtn setFrame:CGRectMake(300, 300, 20, 20)];
+    [self.view addSubview:testBtn];
+    [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 // 分类切换操作
@@ -119,5 +122,12 @@
         currentTabBtn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 64, 42)];
     }
     return currentTabBtn;
+}
+
+- (void)goToContent:(id)sender
+{
+    ZixunContentViewController *zixunContentView = [[ZixunContentViewController alloc]init];
+    zixunContentView.zixunId = @"1";
+    [self.navigationController pushViewController:zixunContentView animated:YES];
 }
 @end
