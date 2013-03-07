@@ -34,32 +34,19 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    //[self.contentScrollView setFrame:CGRectMake(0, 0, 320, 415)];
     [self.view addGestureRecognizer:self.swipeGesture];
-    //生成底部返回和分享按钮
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setFrame:CGRectMake(0, 415, 160, 45)];
-    [backButton setBackgroundImage:[UIImage imageNamed:@"ContentBack.png"] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [shareButton setFrame:CGRectMake(160, 415, 160, 45)];
-    [shareButton setBackgroundImage:[UIImage imageNamed:@"ContentShare.png"] forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(contentShare:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:shareButton];
-    [self.view addSubview:backButton];
     //生成头部绿色背景
-    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 120)];
+    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0,0,320, 120)];
     [self.headerView setBackgroundColor:[UIColor colorWithRed:61.0/255.0 green:157.0/255.0 blue:1.0/255.0 alpha:1.0]];
     [self.contentScrollView addSubview:self.headerView];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getNewsContent",@"method",self.zixunId,@"id", nil];
     MKNetworkOperation *op = [YMGlobal getOperation:params];
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-        NSLog(@"zixuncontent%@",[completedOperation responseString]);
+       // NSLog(@"zixuncontent%@",[completedOperation responseString]);
         SBJsonParser *parser = [[SBJsonParser alloc]init];
         NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
         if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"])
         {
-            NSLog(@"%@",object);
             NSMutableDictionary *data = [object objectForKey:@"data"];
             NSString *titleContent = [data objectForKey:@"title"];
             NSString *content = [data objectForKey:@"content"];
@@ -74,27 +61,38 @@
                 self.contentTitleLable.backgroundColor = [UIColor clearColor];
                 [self.contentTitleLable setFont:[UIFont systemFontOfSize:22.0]];
                 [self.contentTitleLable setTextColor:[UIColor whiteColor]];
-                [self.contentScrollView addSubview:self.contentTitleLable];
+                [self.headerView addSubview:self.contentTitleLable];
                 //设置来源，作者，发表时间
                 self.detailLable = [[UILabel alloc]initWithFrame:CGRectMake(20, height+40, 280, 20)];
                 [self.detailLable setFont:[UIFont systemFontOfSize:14.0]];
                 [self.detailLable setText:[NSString stringWithFormat:@"%@   %@    %@",[data objectForKey:@"source"],[data objectForKey:@"author"],[data objectForKey:@"create_time"]]];
                 [self.detailLable setBackgroundColor:[UIColor clearColor]];
                 [self.detailLable setTextColor:[UIColor whiteColor]];
-                [self.contentScrollView addSubview:self.detailLable];
+                [self.headerView  addSubview:self.detailLable];
             }
             if(content)
             {
                 self.contentWebView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 120, 320, 295)];
-                //self.contentWebView
-                [self.view addSubview:self.contentWebView];
+                self.contentWebView.delegate = self;
                 [self.contentWebView loadHTMLString:content baseURL:[NSURL URLWithString:@"about:blank"]];
+                
             }
         }
     } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
         NSLog(@"%@",error);
     }];
     [ApplicationDelegate.appEngine enqueueOperation:op];
+    //生成底部返回和分享按钮
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setFrame:CGRectMake(0, 415, 160, 45)];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"ContentBack.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(goBack:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [shareButton setFrame:CGRectMake(160, 415, 160, 45)];
+    [shareButton setBackgroundImage:[UIImage imageNamed:@"ContentShare.png"] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(contentShare:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:shareButton];
+    [self.view addSubview:backButton];
 }
 
 - (void)didReceiveMemoryWarning
@@ -128,6 +126,15 @@
 
 }
 
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CGRect frame = webView.frame;
+    NSString *fitHeight = [webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"];
+    frame.size.height = [fitHeight floatValue];
+    webView.frame = frame;
+    [self.contentScrollView setContentSize:CGSizeMake(320, frame.size.height + 120)];
+    [self.contentScrollView addSubview:webView];
+}
 
 - (void)viewDidUnload {
     [self setContentScrollView:nil];
