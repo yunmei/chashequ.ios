@@ -10,6 +10,7 @@
 #import "YMGlobal.h"
 #import "SBJson.h"
 #import "ZixunContentViewController.h"
+#import "PullToRefreshTableView.h"
 
 @interface ViewController : UIViewController<UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -21,5 +22,7 @@
 @property (strong, nonatomic) UIImageView *pageControlView;
 @property (strong, nonatomic) UIButton *currentTabBtn;
 @property (strong, nonatomic) UIScrollView *tabScrollView;
+
+@property (strong, nonatomic) PullToRefreshTableView *refreshTableView2;
 
 @end

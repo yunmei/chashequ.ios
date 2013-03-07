@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "NewsCell.h"
 
 @interface ViewController ()
 
@@ -21,6 +22,7 @@
 @synthesize pageControlView;
 @synthesize currentTabBtn;
 @synthesize tabScrollView;
+@synthesize refreshTableView2;
 
 - (void)viewDidLoad
 {
@@ -43,8 +45,56 @@
     [testBtn setFrame:CGRectMake(300, 300, 20, 20)];
     [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
     [self.tabScrollView addSubview:testBtn];
+    
+    self.refreshTableView2.delegate = self;
+    self.refreshTableView2.dataSource = self;
+    [self.tabScrollView addSubview:self.refreshTableView2];
+    
     [self.tabScrollView setDelegate:self];
     [self.view addSubview:self.tabScrollView];
+    
+    // 开始加载数据
+//    MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc]init];
+//    if ([self.requestDataType isEqualToString:@"category"]) {
+//        [params setObject:@"goods_getListByCatId" forKey:@"act"];
+//        [params setObject:self.requestId forKey:@"catId"];
+//    } else if ([self.requestDataType isEqualToString:@"goodsIds"]) {
+//        [params setObject:@"goods_getListById" forKey:@"act"];
+//        [params setObject:self.requestId forKey:@"goodsId"];
+//    } else if ([self.requestDataType isEqualToString:@"hotAdList"]) {
+//        [params setObject:@"goods_getHotList" forKey:@"act"];
+//    } else if ([self.requestDataType isEqualToString:@"newAdList"]) {
+//        [params setObject:@"goods_getNewList" forKey:@"act"];
+//    } else if ([self.requestDataType isEqualToString:@"search"]) {
+//        [params setObject:@"goods_getListByKeywords" forKey:@"act"];
+//        [params setObject:self.requestId forKey:@"keywords"];
+//    }
+//    MKNetworkOperation* op = [YMGlobal getOperation:params];
+//    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+//        SBJsonParser *parser = [[SBJsonParser alloc]init];
+//        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+//        if ([[object objectForKey:@"errorMessage"] isEqualToString:@"success"]) {
+//            for (id o in [object objectForKey:@"data"]) {
+//                GoodsModel *goodsModel = [[GoodsModel alloc]init];
+//                goodsModel.goodsId = [o objectForKey:@"goodsId"];
+//                goodsModel.goodsName = [o objectForKey:@"goodsName"];
+//                goodsModel.goodsPrice = [o objectForKey:@"goodsPrice"];
+//                goodsModel.imageUrl = [o objectForKey:@"imageUrl"];
+//                [self.goodsList addObject:goodsModel];
+//            }
+//        }
+//        if ([self.requestDataType isEqualToString:@"category"]) {
+//            [self.refreshTableView reloadData:YES];
+//        } else {
+//            [self.refreshTableView reloadData:NO];
+//        }
+//        [HUD hide:YES];
+//    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+//        NSLog(@"Error:%@", error);
+//        [HUD hide:YES];
+//    }];
+//    [ApplicationDelegate.appEngine enqueueOperation: op];
 }
 
 // ScrollViewDidScroll
@@ -85,6 +135,25 @@
     }
 }
 
+// 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 10;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"NewsCell";
+    NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if(cell==nil) {
+        cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    [cell.contentView addSubview:cell.newsTitleLabel];
+    cell.newsTitleLabel.text = @"testtestwttt";
+//    [YMGlobal loadImage:goodsModel.imageUrl andImageView:cell.goodsImageView];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    return cell;
+}
+
 // 分类切换操作
 - (void)changeType:(id)sender
 {
@@ -112,9 +181,15 @@
 }
 
 - (void)viewDidUnload {
+    [self setBtnTab1:nil];
+    [self setBtnTab2:nil];
+    [self setBtnTab3:nil];
+    [self setBtnTab4:nil];
+    [self setBtnTab5:nil];
     [self setPageControlView:nil];
     [self setCurrentTabBtn:nil];
     [self setTabScrollView:nil];
+    [self setRefreshTableView2:nil];
     [super viewDidUnload];
 }
 - (void)goToContent:(id)sender
@@ -215,5 +290,15 @@
         tabScrollView.tag = 1;
     }
     return tabScrollView;
+}
+- (PullToRefreshTableView *)refreshTableView2
+{
+    if (refreshTableView2 == nil) {
+        refreshTableView2 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(320, 0, 320, 414)];
+        [refreshTableView2 setRowHeight:94.0];
+        [refreshTableView2 setBackgroundColor:[UIColor redColor]];
+        refreshTableView2.tag = 2;
+    }
+    return refreshTableView2;
 }
 @end
