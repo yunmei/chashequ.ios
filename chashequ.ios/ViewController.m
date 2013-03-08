@@ -105,6 +105,9 @@
     if (scrollView.tag == 1) {
         int offset = (int)scrollView.contentOffset.x;
         int page = (int)(offset/320) + 1;
+        if (offset%320 > 160) {
+            page = page+1;
+        }
         //动画开始
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.3];
