@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "NewsCell.h"
+#import "MBProgressHUD.h"
 
 @interface ViewController ()
 
@@ -22,10 +23,16 @@
 @synthesize pageControlView;
 @synthesize currentTabBtn;
 @synthesize tabScrollView;
+@synthesize refreshTableView1;
 @synthesize refreshTableView2;
 @synthesize refreshTableView3;
 @synthesize refreshTableView4;
 @synthesize refreshTableView5;
+@synthesize tab1Array;
+@synthesize tab2Array;
+@synthesize tab3Array;
+@synthesize tab4Array;
+@synthesize tab5Array;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -47,7 +54,7 @@
     [testBtn setFrame:CGRectMake(300, 300, 20, 20)];
     [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
     [self.tabScrollView addSubview:testBtn];
-    
+    [self.tabScrollView addSubview:self.refreshTableView1];
     [self.tabScrollView addSubview:self.refreshTableView2];
     [self.tabScrollView addSubview:self.refreshTableView3];
     [self.tabScrollView addSubview:self.refreshTableView4];
@@ -55,48 +62,94 @@
     [self.tabScrollView setDelegate:self];
     [self.view addSubview:self.tabScrollView];
     
-    // 开始加载数据
-//    MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-//    NSMutableDictionary *params = [[NSMutableDictionary alloc]init];
-//    if ([self.requestDataType isEqualToString:@"category"]) {
-//        [params setObject:@"goods_getListByCatId" forKey:@"act"];
-//        [params setObject:self.requestId forKey:@"catId"];
-//    } else if ([self.requestDataType isEqualToString:@"goodsIds"]) {
-//        [params setObject:@"goods_getListById" forKey:@"act"];
-//        [params setObject:self.requestId forKey:@"goodsId"];
-//    } else if ([self.requestDataType isEqualToString:@"hotAdList"]) {
-//        [params setObject:@"goods_getHotList" forKey:@"act"];
-//    } else if ([self.requestDataType isEqualToString:@"newAdList"]) {
-//        [params setObject:@"goods_getNewList" forKey:@"act"];
-//    } else if ([self.requestDataType isEqualToString:@"search"]) {
-//        [params setObject:@"goods_getListByKeywords" forKey:@"act"];
-//        [params setObject:self.requestId forKey:@"keywords"];
-//    }
-//    MKNetworkOperation* op = [YMGlobal getOperation:params];
-//    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-//        SBJsonParser *parser = [[SBJsonParser alloc]init];
-//        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
-//        if ([[object objectForKey:@"errorMessage"] isEqualToString:@"success"]) {
-//            for (id o in [object objectForKey:@"data"]) {
-//                GoodsModel *goodsModel = [[GoodsModel alloc]init];
-//                goodsModel.goodsId = [o objectForKey:@"goodsId"];
-//                goodsModel.goodsName = [o objectForKey:@"goodsName"];
-//                goodsModel.goodsPrice = [o objectForKey:@"goodsPrice"];
-//                goodsModel.imageUrl = [o objectForKey:@"imageUrl"];
-//                [self.goodsList addObject:goodsModel];
-//            }
-//        }
-//        if ([self.requestDataType isEqualToString:@"category"]) {
-//            [self.refreshTableView reloadData:YES];
-//        } else {
-//            [self.refreshTableView reloadData:NO];
-//        }
-//        [HUD hide:YES];
-//    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
-//        NSLog(@"Error:%@", error);
-//        [HUD hide:YES];
-//    }];
-//    [ApplicationDelegate.appEngine enqueueOperation: op];
+    // 开始加载资讯id=52
+    MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",@"52",@"type", nil];
+    MKNetworkOperation *op = [YMGlobal getOperation:params];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        //NSLog(@"list%@",[completedOperation responseString]);
+        SBJsonParser *parser = [[SBJsonParser alloc]init];
+        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+        if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+            tab2Array = [object objectForKey:@"data"];
+            if ([tab2Array count] < 10) {
+                [refreshTableView2 reloadData:NO];
+            } else {
+                [refreshTableView2 reloadData:YES];
+            }
+        }
+        [HUD hide:YES];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"%@",error);
+        [HUD hide:YES];
+    }];
+    [ApplicationDelegate.appEngine enqueueOperation:op];
+    // 经营id=53
+    HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",@"53",@"type", nil];
+    op = [YMGlobal getOperation:params];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        //NSLog(@"list%@",[completedOperation responseString]);
+        SBJsonParser *parser = [[SBJsonParser alloc]init];
+        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+        if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+            tab3Array = [object objectForKey:@"data"];
+            if ([tab3Array count] < 10) {
+                [refreshTableView3 reloadData:NO];
+            } else {
+                [refreshTableView3 reloadData:YES];
+            }
+        }
+        [HUD hide:YES];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"%@",error);
+        [HUD hide:YES];
+    }];
+    [ApplicationDelegate.appEngine enqueueOperation:op];
+    // 茶百科id16
+    HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",@"16",@"type", nil];
+    op = [YMGlobal getOperation:params];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        //NSLog(@"list%@",[completedOperation responseString]);
+        SBJsonParser *parser = [[SBJsonParser alloc]init];
+        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+        if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+            tab4Array = [object objectForKey:@"data"];
+            if ([tab4Array count] < 10) {
+                [refreshTableView4 reloadData:NO];
+            } else {
+                [refreshTableView4 reloadData:YES];
+            }
+        }
+        [HUD hide:YES];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"%@",error);
+        [HUD hide:YES];
+    }];
+    [ApplicationDelegate.appEngine enqueueOperation:op];
+    // 数据id=54
+    HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",@"54",@"type", nil];
+    op = [YMGlobal getOperation:params];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        //NSLog(@"list%@",[completedOperation responseString]);
+        SBJsonParser *parser = [[SBJsonParser alloc]init];
+        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+        if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+            tab5Array = [object objectForKey:@"data"];
+            if ([tab5Array count] < 10) {
+                [refreshTableView5 reloadData:NO];
+            } else {
+                [refreshTableView5 reloadData:YES];
+            }
+        }
+        [HUD hide:YES];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"%@",error);
+        [HUD hide:YES];
+    }];
+    [ApplicationDelegate.appEngine enqueueOperation:op];
 }
 
 // ScrollViewDidScroll
@@ -141,25 +194,165 @@
 }
 
 // UITableView
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView.tag == 1) {
+        return 150;
+    }
+    return 0;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (tableView.tag == 1) {
+        UIScrollView *adScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
+        [adScrollView setBackgroundColor:[UIColor grayColor]];
+        tableView.tableHeaderView=adScrollView;
+        return adScrollView;
+    }
+    return nil;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView.tag == 1) {
         return 6;
+    } else if (tableView.tag == 2) {
+        return [tab2Array count];
+    } else if (tableView.tag == 3) {
+        return [tab3Array count];
+    } else if (tableView.tag == 4) {
+        return [tab4Array count];
+    } else if (tableView.tag == 5) {
+        return [tab5Array count];
     }
     return 10;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"NewsCell";
-    NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if(cell==nil) {
-        cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    NSMutableDictionary *tempDictionary = [[NSMutableDictionary alloc]init];
+    if (tableView.tag == 2) {
+        static NSString *cellIdentifier2 = @"NewsCell2";
+        NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier2];
+        if(cell==nil) {
+            cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier2];
+        }
+        tempDictionary = [tab2Array objectAtIndex:indexPath.row];
+        cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
+        [cell.contentView addSubview:cell.newsTitleLabel];
+        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
+        [cell.contentView addSubview:cell.newsTimeLabel];
+        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
+        [cell.contentView addSubview:cell.newsFromLabel];
+        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
+        [cell.contentView addSubview:cell.newsAuthorLabel];
+        if (![[tempDictionary objectForKey:@"wap_thumb"] isEqualToString:@""]) {
+            [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+            [cell.contentView addSubview:cell.newsImageView];
+        }
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        return cell;
+    } else if (tableView.tag == 3) {
+        static NSString *cellIdentifier3 = @"NewsCell3";
+        NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier3];
+        if(cell==nil) {
+            cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier3];
+        }
+        tempDictionary = [tab3Array objectAtIndex:indexPath.row];
+        cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
+        [cell.contentView addSubview:cell.newsTitleLabel];
+        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
+        [cell.contentView addSubview:cell.newsTimeLabel];
+        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
+        [cell.contentView addSubview:cell.newsFromLabel];
+        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
+        [cell.contentView addSubview:cell.newsAuthorLabel];
+        [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+        [cell.contentView addSubview:cell.newsImageView];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        return cell;
+    } else if (tableView.tag == 4) {
+        static NSString *cellIdentifier4 = @"NewsCell4";
+        NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier4];
+        if(cell==nil) {
+            cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier4];
+        }
+        tempDictionary = [tab4Array objectAtIndex:indexPath.row];
+        cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
+        [cell.contentView addSubview:cell.newsTitleLabel];
+        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
+        [cell.contentView addSubview:cell.newsTimeLabel];
+        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
+        [cell.contentView addSubview:cell.newsFromLabel];
+        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
+        [cell.contentView addSubview:cell.newsAuthorLabel];
+        [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+        [cell.contentView addSubview:cell.newsImageView];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        return cell;
+    } else if (tableView.tag == 5) {
+        static NSString *cellIdentifier5 = @"NewsCell5";
+        NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier5];
+        if(cell==nil) {
+            cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier5];
+        }
+        tempDictionary = [tab5Array objectAtIndex:indexPath.row];
+        cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
+        [cell.contentView addSubview:cell.newsTitleLabel];
+        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
+        [cell.contentView addSubview:cell.newsTimeLabel];
+        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
+        [cell.contentView addSubview:cell.newsFromLabel];
+        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
+        [cell.contentView addSubview:cell.newsAuthorLabel];
+        [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+        [cell.contentView addSubview:cell.newsImageView];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        return cell;
+    } else {
+        static NSString *cellIdentifier1 = @"NewsCell1";
+        NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier1];
+        if(cell==nil) {
+            cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier1];
+        }
+        [cell.contentView addSubview:cell.newsTitleLabel];
+        cell.newsTitleLabel.text = @"testtestwttt";
+        //    [YMGlobal loadImage:goodsModel.imageUrl andImageView:cell.goodsImageView];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        return cell;
     }
-    [cell.contentView addSubview:cell.newsTitleLabel];
-    cell.newsTitleLabel.text = @"testtestwttt";
-//    [YMGlobal loadImage:goodsModel.imageUrl andImageView:cell.goodsImageView];
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableDictionary *tempDictionary = [[NSMutableDictionary alloc]init];
+    NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+    switch (tableView.tag) {
+        case 1:
+            tempArray = tab1Array;
+            break;
+        case 2:
+            tempArray = tab2Array;
+            break;
+        case 3:
+            tempArray = tab3Array;
+            break;
+        case 4:
+            tempArray = tab4Array;
+            break;
+        case 5:
+            tempArray = tab5Array;
+            break;
+    }
+    tempDictionary = [tempArray objectAtIndex:indexPath.row];
+    ZixunContentViewController *zixunContentView = [[ZixunContentViewController alloc]init];
+    zixunContentView.zixunId = [tempDictionary objectForKey:@"id"];
+    [self.navigationController pushViewController:zixunContentView animated:YES];
 }
 
 // 分类切换操作
@@ -197,17 +390,17 @@
     [self setPageControlView:nil];
     [self setCurrentTabBtn:nil];
     [self setTabScrollView:nil];
+    [self setRefreshTableView1:nil];
     [self setRefreshTableView2:nil];
     [self setRefreshTableView3:nil];
     [self setRefreshTableView4:nil];
     [self setRefreshTableView5:nil];
+    [self setTab1Array:nil];
+    [self setTab2Array:nil];
+    [self setTab3Array:nil];
+    [self setTab4Array:nil];
+    [self setTab5Array:nil];
     [super viewDidUnload];
-}
-- (void)goToContent:(id)sender
-{
-    ZixunContentViewController *zixunContentView = [[ZixunContentViewController alloc]init];
-    zixunContentView.zixunId = @"1";
-    [self.navigationController pushViewController:zixunContentView animated:YES];
 }
 
 // 初始化操作
@@ -302,12 +495,23 @@
     }
     return tabScrollView;
 }
+- (UITableView *)refreshTableView1
+{
+    if (refreshTableView1 == nil) {
+        refreshTableView1 = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, 414)];
+        [refreshTableView1 setRowHeight:80.0];
+        [refreshTableView4 setBackgroundColor:[UIColor yellowColor]];
+        refreshTableView1.delegate = self;
+        refreshTableView1.dataSource = self;
+        refreshTableView1.tag = 1;
+    }
+    return refreshTableView1;
+}
 - (PullToRefreshTableView *)refreshTableView2
 {
     if (refreshTableView2 == nil) {
         refreshTableView2 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(320, 0, 320, 414)];
-        [refreshTableView2 setRowHeight:94.0];
-        [refreshTableView2 setBackgroundColor:[UIColor redColor]];
+        [refreshTableView2 setRowHeight:80.0];
         refreshTableView2.delegate = self;
         refreshTableView2.dataSource = self;
         refreshTableView2.tag = 2;
@@ -318,8 +522,7 @@
 {
     if (refreshTableView3 == nil) {
         refreshTableView3 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(640, 0, 320, 414)];
-        [refreshTableView3 setRowHeight:94.0];
-        [refreshTableView3 setBackgroundColor:[UIColor blueColor]];
+        [refreshTableView3 setRowHeight:80.0];
         refreshTableView3.delegate = self;
         refreshTableView3.dataSource = self;
         refreshTableView3.tag = 3;
@@ -330,8 +533,7 @@
 {
     if (refreshTableView4 == nil) {
         refreshTableView4 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(960, 0, 320, 414)];
-        [refreshTableView4 setRowHeight:94.0];
-        [refreshTableView4 setBackgroundColor:[UIColor yellowColor]];
+        [refreshTableView4 setRowHeight:80.0];
         refreshTableView4.delegate = self;
         refreshTableView4.dataSource = self;
         refreshTableView4.tag = 4;
@@ -342,12 +544,25 @@
 {
     if (refreshTableView5 == nil) {
         refreshTableView5 = [[PullToRefreshTableView alloc]initWithFrame:CGRectMake(1280, 0, 320, 414)];
-        [refreshTableView5 setRowHeight:94.0];
-        [refreshTableView5 setBackgroundColor:[UIColor blackColor]];
+        [refreshTableView5 setRowHeight:80.0];
         refreshTableView5.delegate = self;
         refreshTableView5.dataSource = self;
         refreshTableView5.tag = 5;
     }
     return refreshTableView5;
+}
+- (NSMutableArray *)tab1Array
+{
+    if (tab1Array == nil) {
+        tab1Array = [[NSMutableArray alloc]init];
+    }
+    return tab1Array;
+}
+- (NSMutableArray *)tab2Array
+{
+    if (tab2Array == nil) {
+        tab2Array = [[NSMutableArray alloc]init];
+    }
+    return tab2Array;
 }
 @end
