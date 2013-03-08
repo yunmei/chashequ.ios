@@ -49,7 +49,7 @@
         {
             NSMutableDictionary *data = [object objectForKey:@"data"];
             NSString *titleContent = [data objectForKey:@"title"];
-            NSString *content = [data objectForKey:@"content"];
+            NSString *content = [data objectForKey:@"wap_content"];
             if(titleContent)
             {
                 //计算内容所需要的高度
