@@ -47,7 +47,7 @@
     switch (state) {
         case k_PULL_STATE_NORMAL:
             currentState = k_PULL_STATE_NORMAL;
-            stateLabel.text = @"往上拖加载更多商品";
+            stateLabel.text = @"往上拖加载更多";
             break;
             
         case k_PULL_STATE_LOAD:
@@ -58,7 +58,7 @@
             
         case k_PULL_STATE_END:
             currentState = k_PULL_STATE_END;
-            stateLabel.text =@"商品已全部显示";
+            stateLabel.text =@"已全部显示";
             break;
         case  k_PULL_STATE_NOScroll:
             currentState = k_PULL_STATE_NOScroll;
@@ -66,7 +66,7 @@
             break;
         default:
             currentState = k_PULL_STATE_NOScroll;
-            stateLabel.text = @"往上拖加载更多商品";
+            stateLabel.text = @"往上拖加载更多";
             break;
     }
     [UIView commitAnimations];
