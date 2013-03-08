@@ -13,3 +13,6 @@
 #define URL_HOME        @"http://sns.maimaicha.com/"
 #define URL_HELP        @"http://www.967067.cn/waphelp/index.php"
 #define SYS_VERSION     @"1.0"
+#define WEIBO_APPKEY    @"1791869588"
+#define WEIBO_APPSECRETE @"ba2e3d8596b114f110c80afe654c4d43"
+#define WEIBO_REDIRECTURL @"https://api.weibo.com/oauth2/default.html"

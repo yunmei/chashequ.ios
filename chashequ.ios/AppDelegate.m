@@ -10,8 +10,13 @@
 
 #import "ViewController.h"
 #import "SlideViewController.h"
+#import "SinaWeibo.h"
+#import "SNViewController.h"
 @implementation AppDelegate
 @synthesize appEngine;
+@synthesize snViewController;
+@synthesize sinaweibo;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSLog(@"222");
@@ -35,6 +40,9 @@
         self.window.rootViewController = navController;
         [navController setNavigationBarHidden:YES];
     }
+    //返回一个sinaweibo对象
+    self.snViewController = [[SNViewController alloc]init];
+    self.sinaweibo = [[SinaWeibo alloc]initWithAppKey:WEIBO_APPKEY appSecret:WEIBO_APPSECRETE appRedirectURI:WEIBO_REDIRECTURL andDelegate:self.snViewController];
     [self.window makeKeyAndVisible];
     return YES;
 }

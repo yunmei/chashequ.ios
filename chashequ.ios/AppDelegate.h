@@ -11,11 +11,14 @@
 #import "MKNetworkKit.h"
 #define ApplicationDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
 @class ViewController;
-
+@class SinaWeibo;
+@class SNViewController;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) ViewController *viewController;
 @property (strong, nonatomic) MKNetworkEngine *appEngine;
+@property (strong, nonatomic) SinaWeibo *sinaweibo;
+@property (strong, nonatomic) SNViewController *snViewController;
 @end

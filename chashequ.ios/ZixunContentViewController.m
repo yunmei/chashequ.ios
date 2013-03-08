@@ -9,7 +9,7 @@
 #import "ZixunContentViewController.h"
 #import "YMGlobal.h"
 #import "SBJson.h"
-
+#import "SNViewController.h"
 @interface ZixunContentViewController ()
 
 @end
@@ -118,7 +118,8 @@
 
 - (void)contentShare:(id)sender
 {
-    NSLog(@"shareContent");
+    SNViewController *snView = [[SNViewController alloc]init];
+    [self.navigationController pushViewController:snView animated:YES];
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
