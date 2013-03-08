@@ -12,8 +12,6 @@
 
 @property (strong, nonatomic) UIImageView *newsImageView;
 @property (strong, nonatomic) UILabel *newsTitleLabel;
-@property (strong, nonatomic) UILabel *newsFromLabel;
-@property (strong, nonatomic) UILabel *newsTimeLabel;
-@property (strong, nonatomic) UILabel *newsAuthorLabel;
-
+@property (strong, nonatomic) UILabel *newsOtherLabel;
+@property (strong, nonatomic) UILabel *newsDescLabel;
 @end

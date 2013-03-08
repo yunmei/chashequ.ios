@@ -20,6 +20,7 @@
 		4683D56216E71ADE00D9DED6 /* btn_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4683D55F16E71ADE00D9DED6 /* btn_bg.png */; };
 		4683D56316E71ADE00D9DED6 /* tab_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 4683D56016E71ADE00D9DED6 /* tab_bg.png */; };
 		4683D56416E71ADE00D9DED6 /* page_control.png in Resources */ = {isa = PBXBuildFile; fileRef = 4683D56116E71ADE00D9DED6 /* page_control.png */; };
+		46895FF516E9DCB6002FB746 /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 46895FF416E9DCB6002FB746 /* white.png */; };
 		AA0C7A1F16E5979D0056803B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0C7A1E16E5979D0056803B /* CFNetwork.framework */; };
 		AA0C7A2216E597BA0056803B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0C7A2116E597BA0056803B /* Security.framework */; };
 		AA0C7A2416E597C40056803B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0C7A2316E597C40056803B /* SystemConfiguration.framework */; };
@@ -99,6 +100,7 @@
 		4683D55F16E71ADE00D9DED6 /* btn_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_bg.png; sourceTree = "<group>"; };
 		4683D56016E71ADE00D9DED6 /* tab_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_bg.png; sourceTree = "<group>"; };
 		4683D56116E71ADE00D9DED6 /* page_control.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_control.png; sourceTree = "<group>"; };
+		46895FF416E9DCB6002FB746 /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		AA0C7A1E16E5979D0056803B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		AA0C7A2116E597BA0056803B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		AA0C7A2316E597C40056803B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -276,6 +278,7 @@
 		AA52ABA716E581BB00416614 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				46895FF416E9DCB6002FB746 /* white.png */,
 				AA61B6CD16E82375003B191B /* ContentBack.png */,
 				AA61B6CA16E82371003B191B /* ContentShare.png */,
 				4683D55F16E71ADE00D9DED6 /* btn_bg.png */,
@@ -524,6 +527,7 @@
 				AA61B6CE16E82375003B191B /* ContentBack.png in Resources */,
 				AA6E39D116E97E9A0060C7E8 /* SNViewController.xib in Resources */,
 				AAD7083D16E991E00006D224 /* SinaWeibo.bundle in Resources */,
+				46895FF516E9DCB6002FB746 /* white.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

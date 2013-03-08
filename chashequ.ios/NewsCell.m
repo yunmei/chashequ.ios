@@ -12,16 +12,16 @@
 
 @synthesize newsImageView;
 @synthesize newsTitleLabel;
-@synthesize newsFromLabel;
-@synthesize newsTimeLabel;
-@synthesize newsAuthorLabel;
-
+@synthesize newsOtherLabel;
+@synthesize newsDescLabel;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         self.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
+        self.accessoryType = UITableViewCellAccessoryNone;
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     return self;
 }
@@ -36,44 +36,37 @@
 - (UILabel *)newsTitleLabel
 {
     if (newsTitleLabel == nil) {
-        newsTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, 220, 40)];
+        newsTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, 220, 20)];
         [newsTitleLabel setFont:[UIFont systemFontOfSize:16.0]];
         [newsTitleLabel setBackgroundColor:[UIColor clearColor]];
+        newsTitleLabel.numberOfLines = 0;
+        newsTitleLabel.lineBreakMode = UILineBreakModeCharacterWrap;
     }
     return newsTitleLabel;
 }
 
-- (UILabel *)newsFromLabel
+- (UILabel *)newsOtherLabel
 {
-    if (newsFromLabel == nil) {
-        newsFromLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 45, 60, 30)];
-        [newsFromLabel setFont:[UIFont systemFontOfSize:12.0]];
-        newsFromLabel.textColor = [UIColor grayColor];
-        [newsFromLabel setBackgroundColor:[UIColor clearColor]];
+    if (newsOtherLabel == nil) {
+        newsOtherLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 50, 300, 20)];
+        [newsOtherLabel setFont:[UIFont systemFontOfSize:12.0]];
+        newsOtherLabel.textColor = [UIColor grayColor];
+        [newsOtherLabel setBackgroundColor:[UIColor clearColor]];
     }
-    return newsFromLabel;
+    return newsOtherLabel;
 }
 
-- (UILabel *)newsAuthorLabel
+- (UILabel *)newsDescLabel
 {
-    if (newsAuthorLabel == nil) {
-        newsAuthorLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 45, 80, 30)];
-        [newsAuthorLabel setFont:[UIFont systemFontOfSize:12.0]];
-        newsAuthorLabel.textColor = [UIColor grayColor];
-        [newsAuthorLabel setBackgroundColor:[UIColor clearColor]];
+    if (newsDescLabel == nil) {
+        newsDescLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 28, 220, 20)];
+        [newsDescLabel setFont:[UIFont systemFontOfSize:12.0]];
+        [newsDescLabel setBackgroundColor:[UIColor clearColor]];
+        newsDescLabel.textColor = [UIColor grayColor];
+        newsDescLabel.numberOfLines = 0;
+        newsDescLabel.lineBreakMode = UILineBreakModeCharacterWrap;
     }
-    return newsAuthorLabel;
-}
-
-- (UILabel *)newsTimeLabel
-{
-    if (newsTimeLabel == nil) {
-        newsTimeLabel = [[UILabel alloc]initWithFrame:CGRectMake(145, 45, 80, 30)];
-        [newsTimeLabel setFont:[UIFont systemFontOfSize:12.0]];
-        newsTimeLabel.textColor = [UIColor grayColor];
-        [newsTimeLabel setBackgroundColor:[UIColor clearColor]];
-    }
-    return newsTimeLabel;
+    return newsDescLabel;
 }
 
 - (UIImageView *)newsImageView

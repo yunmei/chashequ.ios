@@ -229,6 +229,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableDictionary *tempDictionary = [[NSMutableDictionary alloc]init];
+    float titleLabelWidth = 220;
     if (tableView.tag == 2) {
         static NSString *cellIdentifier2 = @"NewsCell2";
         NewsCell *cell = (NewsCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier2];
@@ -238,18 +239,23 @@
         tempDictionary = [tab2Array objectAtIndex:indexPath.row];
         cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
         [cell.contentView addSubview:cell.newsTitleLabel];
-        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
-        [cell.contentView addSubview:cell.newsTimeLabel];
-        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
-        [cell.contentView addSubview:cell.newsFromLabel];
-        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
-        [cell.contentView addSubview:cell.newsAuthorLabel];
         if (![[tempDictionary objectForKey:@"wap_thumb"] isEqualToString:@""]) {
             [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
-            [cell.contentView addSubview:cell.newsImageView];
+            titleLabelWidth = 220;
+        } else {
+            [cell.newsImageView setImage:[UIImage imageNamed:@"white"]];
+            titleLabelWidth = 300;
         }
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.contentView addSubview:cell.newsImageView];
+        CGSize labelSize = [cell.newsTitleLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:16.0f] constrainedToSize:CGSizeMake(titleLabelWidth, 40) lineBreakMode:UILineBreakModeCharacterWrap];
+        [cell.newsTitleLabel setFrame:CGRectMake(5, 5, labelSize.width, labelSize.height)];
+        if (cell.newsTitleLabel.frame.size.height == 20) {
+            [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
+            cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
+            [cell.contentView addSubview:cell.newsDescLabel];
+        }
+        cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
+        [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
     } else if (tableView.tag == 3) {
         static NSString *cellIdentifier3 = @"NewsCell3";
@@ -260,17 +266,23 @@
         tempDictionary = [tab3Array objectAtIndex:indexPath.row];
         cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
         [cell.contentView addSubview:cell.newsTitleLabel];
-        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
-        [cell.contentView addSubview:cell.newsTimeLabel];
-        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
-        [cell.contentView addSubview:cell.newsFromLabel];
-        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
-        [cell.contentView addSubview:cell.newsAuthorLabel];
-        [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+        if (![[tempDictionary objectForKey:@"wap_thumb"] isEqualToString:@""]) {
+            [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+            titleLabelWidth = 220;
+        } else {
+            [cell.newsImageView setImage:[UIImage imageNamed:@"white"]];
+            titleLabelWidth = 300;
+        }
         [cell.contentView addSubview:cell.newsImageView];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        CGSize labelSize = [cell.newsTitleLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:16.0f] constrainedToSize:CGSizeMake(titleLabelWidth, 40) lineBreakMode:UILineBreakModeCharacterWrap];
+        [cell.newsTitleLabel setFrame:CGRectMake(5, 5, labelSize.width, labelSize.height)];
+        if (cell.newsTitleLabel.frame.size.height == 20) {
+            [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
+            cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
+            [cell.contentView addSubview:cell.newsDescLabel];
+        }
+        cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
+        [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
     } else if (tableView.tag == 4) {
         static NSString *cellIdentifier4 = @"NewsCell4";
@@ -281,17 +293,23 @@
         tempDictionary = [tab4Array objectAtIndex:indexPath.row];
         cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
         [cell.contentView addSubview:cell.newsTitleLabel];
-        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
-        [cell.contentView addSubview:cell.newsTimeLabel];
-        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
-        [cell.contentView addSubview:cell.newsFromLabel];
-        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
-        [cell.contentView addSubview:cell.newsAuthorLabel];
-        [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+        if (![[tempDictionary objectForKey:@"wap_thumb"] isEqualToString:@""]) {
+            [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+            titleLabelWidth = 220;
+        } else {
+            [cell.newsImageView setImage:[UIImage imageNamed:@"white"]];
+            titleLabelWidth = 300;
+        }
         [cell.contentView addSubview:cell.newsImageView];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        CGSize labelSize = [cell.newsTitleLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:16.0f] constrainedToSize:CGSizeMake(titleLabelWidth, 40) lineBreakMode:UILineBreakModeCharacterWrap];
+        [cell.newsTitleLabel setFrame:CGRectMake(5, 5, labelSize.width, labelSize.height)];
+        if (cell.newsTitleLabel.frame.size.height == 20) {
+            [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
+            cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
+            [cell.contentView addSubview:cell.newsDescLabel];
+        }
+        cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
+        [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
     } else if (tableView.tag == 5) {
         static NSString *cellIdentifier5 = @"NewsCell5";
@@ -302,17 +320,23 @@
         tempDictionary = [tab5Array objectAtIndex:indexPath.row];
         cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
         [cell.contentView addSubview:cell.newsTitleLabel];
-        cell.newsTimeLabel.text = [tempDictionary objectForKey:@"create_time"];
-        [cell.contentView addSubview:cell.newsTimeLabel];
-        cell.newsFromLabel.text = [tempDictionary objectForKey:@"source"];
-        [cell.contentView addSubview:cell.newsFromLabel];
-        cell.newsAuthorLabel.text = [tempDictionary objectForKey:@"nickname"];
-        [cell.contentView addSubview:cell.newsAuthorLabel];
-        [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+        if (![[tempDictionary objectForKey:@"wap_thumb"] isEqualToString:@""]) {
+            [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+            titleLabelWidth = 220;
+        } else {
+            [cell.newsImageView setImage:[UIImage imageNamed:@"white"]];
+            titleLabelWidth = 300;
+        }
         [cell.contentView addSubview:cell.newsImageView];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.contentView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:247/255.0 alpha:247/255.0];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        CGSize labelSize = [cell.newsTitleLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:16.0f] constrainedToSize:CGSizeMake(titleLabelWidth, 40) lineBreakMode:UILineBreakModeCharacterWrap];
+        [cell.newsTitleLabel setFrame:CGRectMake(5, 5, labelSize.width, labelSize.height)];
+        if (cell.newsTitleLabel.frame.size.height == 20) {
+            [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
+            cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
+            [cell.contentView addSubview:cell.newsDescLabel];
+        }
+        cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
+        [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
     } else {
         static NSString *cellIdentifier1 = @"NewsCell1";
