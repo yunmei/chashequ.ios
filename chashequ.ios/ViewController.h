@@ -22,6 +22,8 @@
 @property (strong, nonatomic) UIImageView *pageControlView;
 @property (strong, nonatomic) UIButton *currentTabBtn;
 @property (strong, nonatomic) UIScrollView *tabScrollView;
+@property (strong, nonatomic) UIScrollView *adScrollView;
+@property (strong, nonatomic) UILabel *adLabel;
 @property (strong, nonatomic) UITableView *refreshTableView1;
 @property (strong, nonatomic) PullToRefreshTableView *refreshTableView2;
 @property (strong, nonatomic) PullToRefreshTableView *refreshTableView3;
@@ -32,4 +34,5 @@
 @property (strong, nonatomic) NSMutableArray *tab3Array;
 @property (strong, nonatomic) NSMutableArray *tab4Array;
 @property (strong, nonatomic) NSMutableArray *tab5Array;
+@property (strong, nonatomic) NSMutableArray *adArray;
 @end

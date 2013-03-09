@@ -23,6 +23,7 @@
 @synthesize pageControlView;
 @synthesize currentTabBtn;
 @synthesize tabScrollView;
+@synthesize adScrollView;
 @synthesize refreshTableView1;
 @synthesize refreshTableView2;
 @synthesize refreshTableView3;
@@ -33,6 +34,8 @@
 @synthesize tab3Array;
 @synthesize tab4Array;
 @synthesize tab5Array;
+@synthesize adArray;
+@synthesize adLabel;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -58,10 +61,49 @@
     [self.tabScrollView setDelegate:self];
     [self.view addSubview:self.tabScrollView];
     
-    // 开始加载资讯id=52
+    // 广告显示View
+    self.refreshTableView1.tableHeaderView = self.adScrollView;
+    [self.refreshTableView1 addSubview:self.adLabel];
+    
+    // 开始加载数据
+    // 幻灯片图片
     MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",@"52",@"type", nil];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getSlideshow",@"method", nil];
     MKNetworkOperation *op = [YMGlobal getOperation:params];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        SBJsonParser *parser = [[SBJsonParser alloc]init];
+        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+        if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+            adArray = [object objectForKey:@"data"];
+            [self showAdList];
+        }
+        [HUD hide:YES];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"%@",error);
+        [HUD hide:YES];
+    }];
+    [ApplicationDelegate.appEngine enqueueOperation:op];
+    // 头条新闻
+    HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getHeadlines",@"method", nil];
+    op = [YMGlobal getOperation:params];
+    [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+        SBJsonParser *parser = [[SBJsonParser alloc]init];
+        NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+        if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+            tab1Array = [object objectForKey:@"data"];
+            [refreshTableView1 reloadData];
+        }
+        [HUD hide:YES];
+    } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+        NSLog(@"%@",error);
+        [HUD hide:YES];
+    }];
+    [ApplicationDelegate.appEngine enqueueOperation:op];
+    // 资讯id=52
+    HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",@"52",@"type", nil];
+    op = [YMGlobal getOperation:params];
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
         //NSLog(@"list%@",[completedOperation responseString]);
         SBJsonParser *parser = [[SBJsonParser alloc]init];
@@ -148,6 +190,44 @@
     [ApplicationDelegate.appEngine enqueueOperation:op];
 }
 
+- (void)showAdList
+{
+    int countAdList = [self.adArray count];
+    int i = 0;
+    if (countAdList > 0) {
+        for(UIView* subView in [self.adScrollView subviews])
+        {
+            [subView removeFromSuperview];
+        }
+        self.adScrollView.contentSize = CGSizeMake(countAdList * 320, 160);
+        for (NSMutableDictionary *o in self.adArray) {
+            UIButton *adImageBtn = [[UIButton alloc] initWithFrame:CGRectMake(320 * i, 0, 320, 160)];
+            [adImageBtn setTag:[[o objectForKey:@"id"] intValue]];
+            [adImageBtn addTarget:self action:@selector(adClickAction:) forControlEvents:UIControlEventTouchUpInside];
+            [YMGlobal loadImage:[o objectForKey:@"image"] andButton:adImageBtn andControlState:UIControlStateNormal];
+            [self.adScrollView addSubview:adImageBtn];
+            i++;
+        }
+    }
+}
+
+- (void)adClickAction:(id)sender
+{
+//    UIButton *typeBtn = sender;
+//    
+//    // 设置tabButton的文字颜色
+//    [self.currentTabBtn setTitleColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    [typeBtn setTitleColor:[UIColor colorWithRed:61/255.0 green:157/255.0 blue:1/255.0 alpha:1.0] forState:UIControlStateNormal];
+//    self.currentTabBtn = typeBtn;
+//    
+//    //动画开始
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.3];
+//    self.pageControlView.frame = CGRectMake((typeBtn.tag-1) * 64, 42, 64, 3);
+//    [self.tabScrollView setContentOffset:CGPointMake(320 * (typeBtn.tag-1), 0)];
+//    [UIView commitAnimations];
+}
+
 // ScrollViewDidScroll
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -224,7 +304,6 @@
         MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",requestType,@"type", nil];
         [params setObject:[NSString stringWithFormat:@"%d", (countPage+1)] forKey:@"page"];
-        NSLog(@"aaaa:%@", params);
         MKNetworkOperation *op = [YMGlobal getOperation:params];
         [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
             SBJsonParser *parser = [[SBJsonParser alloc]init];
@@ -282,25 +361,16 @@
 // UITableView
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (tableView.tag == 1) {
-        return 150;
-    }
     return 0;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (tableView.tag == 1) {
-        UIScrollView *adScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
-        [adScrollView setBackgroundColor:[UIColor grayColor]];
-        tableView.tableHeaderView=adScrollView;
-        return adScrollView;
-    }
     return nil;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView.tag == 1) {
-        return 6;
+        return [tab1Array count];
     } else if (tableView.tag == 2) {
         return [tab2Array count];
     } else if (tableView.tag == 3) {
@@ -438,10 +508,28 @@
         if(cell==nil) {
             cell = [[NewsCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier1];
         }
+        tempDictionary = [tab1Array objectAtIndex:indexPath.row];
+        cell.newsTitleLabel.text = [tempDictionary objectForKey:@"title"];
         [cell.contentView addSubview:cell.newsTitleLabel];
-        cell.newsTitleLabel.text = @"testtestwttt";
-        //    [YMGlobal loadImage:goodsModel.imageUrl andImageView:cell.goodsImageView];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        if (![[tempDictionary objectForKey:@"wap_thumb"] isEqualToString:@""]) {
+            [YMGlobal loadImage:[tempDictionary objectForKey:@"wap_thumb"] andImageView:cell.newsImageView];
+            titleLabelWidth = 220;
+        } else {
+            [cell.newsImageView setImage:[UIImage imageNamed:@"white"]];
+            titleLabelWidth = 300;
+        }
+        [cell.contentView addSubview:cell.newsImageView];
+        CGSize labelSize = [cell.newsTitleLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:16.0f] constrainedToSize:CGSizeMake(titleLabelWidth, 40) lineBreakMode:UILineBreakModeCharacterWrap];
+        [cell.newsTitleLabel setFrame:CGRectMake(5, 5, labelSize.width, labelSize.height)];
+        if (cell.newsTitleLabel.frame.size.height == 20) {
+            [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
+            cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
+        } else {
+            cell.newsDescLabel.text = @"";
+        }
+        [cell.contentView addSubview:cell.newsDescLabel];
+        cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
+        [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
     }
 }
@@ -489,8 +577,6 @@
     self.pageControlView.frame = CGRectMake((typeBtn.tag-1) * 64, 42, 64, 3);
     [self.tabScrollView setContentOffset:CGPointMake(320 * (typeBtn.tag-1), 0)];
     [UIView commitAnimations];
-    
-    NSLog(@"tag.id:%d", typeBtn.tag);
 }
 
 - (void)didReceiveMemoryWarning
@@ -508,6 +594,7 @@
     [self setPageControlView:nil];
     [self setCurrentTabBtn:nil];
     [self setTabScrollView:nil];
+    [self setAdScrollView:nil];
     [self setRefreshTableView1:nil];
     [self setRefreshTableView2:nil];
     [self setRefreshTableView3:nil];
@@ -518,6 +605,7 @@
     [self setTab3Array:nil];
     [self setTab4Array:nil];
     [self setTab5Array:nil];
+    [self setAdLabel:nil];
     [super viewDidUnload];
 }
 
@@ -613,6 +701,18 @@
     }
     return tabScrollView;
 }
+- (UIScrollView *)adScrollView
+{
+    if (adScrollView == nil) {
+        adScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 160)];
+        adScrollView.contentSize = CGSizeMake(320, 160);
+        adScrollView.pagingEnabled = YES;
+        adScrollView.scrollEnabled = YES;
+        adScrollView.tag = 101;
+        [adScrollView setBackgroundColor:[UIColor grayColor]];
+    }
+    return adScrollView;
+}
 - (UITableView *)refreshTableView1
 {
     if (refreshTableView1 == nil) {
@@ -682,5 +782,47 @@
         tab2Array = [[NSMutableArray alloc]init];
     }
     return tab2Array;
+}
+- (NSMutableArray *)tab3Array
+{
+    if (tab3Array == nil) {
+        tab3Array = [[NSMutableArray alloc]init];
+    }
+    return tab3Array;
+}
+- (NSMutableArray *)tab4Array
+{
+    if (tab4Array == nil) {
+        tab4Array = [[NSMutableArray alloc]init];
+    }
+    return tab4Array;
+}
+- (NSMutableArray *)tab5Array
+{
+    if (tab5Array == nil) {
+        tab5Array = [[NSMutableArray alloc]init];
+    }
+    return tab5Array;
+}
+- (NSMutableArray *)adArray
+{
+    if (adArray == nil) {
+        adArray = [[NSMutableArray alloc]init];
+    }
+    return adArray;
+}
+- (UILabel *)adLabel
+{
+    if (adLabel == nil) {
+        adLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 125, 320, 35)];
+        adLabel.textAlignment = NSTextAlignmentLeft;
+        [adLabel setFont:[UIFont systemFontOfSize:14.0]];
+        [adLabel setBackgroundColor:[UIColor clearColor]];
+        adLabel.text = @"asdfsafsfsdf";
+        adLabel.textColor = [UIColor whiteColor];
+        adLabel.numberOfLines = 0;
+        adLabel.lineBreakMode = UILineBreakModeCharacterWrap;
+    }
+    return adLabel;
 }
 @end
