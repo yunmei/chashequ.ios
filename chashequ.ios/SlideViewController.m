@@ -102,11 +102,12 @@
 
 -(void)addImageToScrollView
 {
-    UIImageView *imgView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    UIImageView *imgView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 460)];
+    NSLog(@"w%fh%f",self.view.frame.size.width,self.view.frame.size.height);
     [imgView1 setImage:[UIImage imageNamed:@"slide1.png"]];
-    UIImageView *imgView2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    UIImageView *imgView2 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, 460)];
     [imgView2 setImage:[UIImage imageNamed:@"slide2.png"]];
-    UIImageView *imgView3 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width*2, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    UIImageView *imgView3 = [[UIImageView alloc]initWithFrame:CGRectMake(self.view.frame.size.width*2, 0, self.view.frame.size.width, 460)];
     [imgView3 setImage:[UIImage imageNamed:@"slide3.png"]];
     [self.pageScroll addSubview:imgView1];
     [self.pageScroll addSubview:imgView2];
