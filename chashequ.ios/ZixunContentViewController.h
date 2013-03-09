@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
+#import "SinaWeibo.h"
+#import "SinaWeiboRequest.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ZixunContentViewController : UIViewController<
 UIWebViewDelegate,
-UIScrollViewDelegate>
+SinaWeiboDelegate,
+SinaWeiboRequestDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIScrollView *contentScrollView;
 @property (strong,nonatomic)UISwipeGestureRecognizer *swipeGesture;
@@ -20,5 +26,25 @@ UIScrollViewDelegate>
 @property (strong,nonatomic)UIView *headerView;
 @property (strong,nonatomic)UILabel *detailLable;
 @property (strong,nonatomic)NSString *shareContent;
-@property (strong,nonatomic) UIView *shareView;
+@property (strong,nonatomic) UIImageView *shareViewBar;
+
+@property (strong, nonatomic) UITextView *textView;
+
+@property (strong, nonatomic) UIView *shareView;
+
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
+
+
+- (void) addButton;
+
+- (void) addShareView;
+
+- (void) share:(UIButton*) sender;
+
+- (void) removeShare:(UIButton*) sender;
+
+- (void) sendShare:(UIButton*) sender;
+
+- (void) exitShare:(UIButton*) sender;
+
 @end
