@@ -36,6 +36,7 @@
 @synthesize tab5Array;
 @synthesize adArray;
 @synthesize adLabel;
+@synthesize adPageControl;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -63,7 +64,12 @@
     
     // 广告显示View
     self.refreshTableView1.tableHeaderView = self.adScrollView;
+    [self.adScrollView setDelegate:self];
+    UIImageView *adBgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 125, 320, 35)];
+    [adBgView setImage:[UIImage imageNamed:@"ad_label_bg"]];
+    [self.refreshTableView1 addSubview:adBgView];
     [self.refreshTableView1 addSubview:self.adLabel];
+    [self.refreshTableView1 addSubview:self.adPageControl];
     
     // 开始加载数据
     // 幻灯片图片
@@ -206,26 +212,21 @@
             [adImageBtn addTarget:self action:@selector(adClickAction:) forControlEvents:UIControlEventTouchUpInside];
             [YMGlobal loadImage:[o objectForKey:@"image"] andButton:adImageBtn andControlState:UIControlStateNormal];
             [self.adScrollView addSubview:adImageBtn];
+            if (i == 0) {
+                self.adLabel.text = [o objectForKey:@"title"];
+            }
             i++;
         }
+        self.adPageControl.numberOfPages = countAdList;
     }
 }
 
 - (void)adClickAction:(id)sender
 {
-//    UIButton *typeBtn = sender;
-//    
-//    // 设置tabButton的文字颜色
-//    [self.currentTabBtn setTitleColor:[UIColor colorWithRed:97/255.0 green:97/255.0 blue:97/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    [typeBtn setTitleColor:[UIColor colorWithRed:61/255.0 green:157/255.0 blue:1/255.0 alpha:1.0] forState:UIControlStateNormal];
-//    self.currentTabBtn = typeBtn;
-//    
-//    //动画开始
-//    [UIView beginAnimations:nil context:nil];
-//    [UIView setAnimationDuration:0.3];
-//    self.pageControlView.frame = CGRectMake((typeBtn.tag-1) * 64, 42, 64, 3);
-//    [self.tabScrollView setContentOffset:CGPointMake(320 * (typeBtn.tag-1), 0)];
-//    [UIView commitAnimations];
+    UIButton *adBtn = sender;
+    ZixunContentViewController *zixunContentView = [[ZixunContentViewController alloc]init];
+    zixunContentView.zixunId = [NSString stringWithFormat:@"%d", adBtn.tag];
+    [self.navigationController pushViewController:zixunContentView animated:YES];
 }
 
 // ScrollViewDidScroll
@@ -266,8 +267,15 @@
                 self.currentTabBtn = self.btnTab5;
                 break;
         }
-    }
-    if (scrollView.tag == 2) {
+    } else if (scrollView.tag == 101) {
+        int offset = (int)scrollView.contentOffset.x;
+        int page = (int)(offset/320);
+        if (offset%320 > 160) {
+            page = page+1;
+        }
+        self.adLabel.text = [[adArray objectAtIndex:(page)] objectForKey:@"title"];
+        [self.adPageControl setCurrentPage:page];
+    } else if (scrollView.tag == 2) {
         [self.refreshTableView2 tableViewDidDragging];
     } else if(scrollView.tag == 3) {
         [self.refreshTableView3 tableViewDidDragging];
@@ -606,6 +614,7 @@
     [self setTab4Array:nil];
     [self setTab5Array:nil];
     [self setAdLabel:nil];
+    [self setAdPageControl:nil];
     [super viewDidUnload];
 }
 
@@ -708,8 +717,8 @@
         adScrollView.contentSize = CGSizeMake(320, 160);
         adScrollView.pagingEnabled = YES;
         adScrollView.scrollEnabled = YES;
-        adScrollView.tag = 101;
         [adScrollView setBackgroundColor:[UIColor grayColor]];
+        adScrollView.tag = 101;
     }
     return adScrollView;
 }
@@ -814,15 +823,23 @@
 - (UILabel *)adLabel
 {
     if (adLabel == nil) {
-        adLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 125, 320, 35)];
+        adLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 125, 315, 35)];
         adLabel.textAlignment = NSTextAlignmentLeft;
-        [adLabel setFont:[UIFont systemFontOfSize:14.0]];
         [adLabel setBackgroundColor:[UIColor clearColor]];
-        adLabel.text = @"asdfsafsfsdf";
         adLabel.textColor = [UIColor whiteColor];
         adLabel.numberOfLines = 0;
         adLabel.lineBreakMode = UILineBreakModeCharacterWrap;
+        [adLabel setFont:[UIFont systemFontOfSize:14.0]];
     }
     return adLabel;
+}
+- (UIPageControl *)adPageControl
+{
+    if (adPageControl == nil) {
+        adPageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(220, 130, 100, 30)];
+        adPageControl.currentPage = 1;
+        adPageControl.numberOfPages = 1;
+    }
+    return adPageControl;
 }
 @end

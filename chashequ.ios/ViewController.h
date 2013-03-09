@@ -35,4 +35,5 @@
 @property (strong, nonatomic) NSMutableArray *tab4Array;
 @property (strong, nonatomic) NSMutableArray *tab5Array;
 @property (strong, nonatomic) NSMutableArray *adArray;
+@property (strong, nonatomic) UIPageControl *adPageControl;
 @end
