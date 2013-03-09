@@ -72,7 +72,7 @@ BOOL ISSHARESHOW = NO;
                 //设置来源，作者，发表时间
                 self.detailLable = [[UILabel alloc]initWithFrame:CGRectMake(10, height+20, 280, 20)];
                 [self.detailLable setFont:[UIFont systemFontOfSize:14.0]];
-                [self.detailLable setText:[NSString stringWithFormat:@"%@   %@    %@",[data objectForKey:@"source"],[data objectForKey:@"author"],[data objectForKey:@"create_time"]]];
+                [self.detailLable setText:[NSString stringWithFormat:@"%@    %@",[data objectForKey:@"author"],[data objectForKey:@"create_time"]]];
                 [self.detailLable setBackgroundColor:[UIColor clearColor]];
                 [self.detailLable setTextColor:[UIColor whiteColor]];
                 [self.headerView  addSubview:self.detailLable];
