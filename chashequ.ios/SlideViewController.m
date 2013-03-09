@@ -86,9 +86,8 @@
     int page = floor((scrollView.contentOffset.x - pageWidth/2)/pageWidth) +1;
     if(scrollView.contentOffset.x == pageWidth * 2)
     {
-        self.gotoMainViewButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [self.gotoMainViewButton setTitle:@"立即体验" forState:UIControlStateNormal];
-        [self.gotoMainViewButton setFrame:CGRectMake(self.view.frame.size.width/2 - 25, self.view.frame.size.height/2 - 10, 50, 20)];
+        self.gotoMainViewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.gotoMainViewButton setFrame:CGRectMake(0, 0, 320, 460)];
         [self.view addSubview:self.gotoMainViewButton];
         [self.gotoMainViewButton addTarget:self action:@selector(gotoMainView:) forControlEvents:UIControlEventTouchUpInside];
     }else{
