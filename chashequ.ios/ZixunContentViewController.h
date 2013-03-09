@@ -19,4 +19,6 @@ UIScrollViewDelegate>
 @property (strong,nonatomic)UILabel *contentTitleLable;
 @property (strong,nonatomic)UIView *headerView;
 @property (strong,nonatomic)UILabel *detailLable;
+@property (strong,nonatomic)NSString *shareContent;
+@property (strong,nonatomic) UIView *shareView;
 @end

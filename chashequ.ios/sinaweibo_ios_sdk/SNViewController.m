@@ -16,7 +16,7 @@
 @synthesize textView = _textView;
 @synthesize shareView = _shareView;
 @synthesize indicator = _indicator;
-
+@synthesize weiboContent;
 - (SinaWeibo*)sinaWeibo
 {
     AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
@@ -93,6 +93,7 @@
     [_textView setTextAlignment:UITextAlignmentLeft];
     [_textView setBackgroundColor:[UIColor whiteColor]];
     [_textView becomeFirstResponder];
+    _textView.text = self.weiboContent;
     _textView.keyboardType = UIKeyboardTypeASCIICapable;
     [_shareView addSubview:_textView];
 }
@@ -136,7 +137,7 @@
     
     SinaWeibo *sinaWeibo = [self sinaWeibo];
     
-    [sinaWeibo requestWithURL:@"statuses/updates.json" params:[NSMutableDictionary dictionaryWithObjectsAndKeys:postStatusText,@"status", nil] httpMethod:@"POST" delegate:self];
+    [sinaWeibo requestWithURL:@"statuses/update.json" params:[NSMutableDictionary dictionaryWithObjectsAndKeys:postStatusText,@"status", nil] httpMethod:@"POST" delegate:self];
     
     [_shareView removeFromSuperview];
     
@@ -159,11 +160,12 @@
 - (void)request:(SinaWeiboRequest *)request didFinishLoadingWithResult:(id)result
 {
     [self.indicator stopAnimating];
-    
+
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"发送成功" message:@"提示" delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
     [alert show];
     [alert release];
     NSLog(@"发送成功");
+    NSLog(@"result%@",result);
 }
 
 //请求失败回调该方法

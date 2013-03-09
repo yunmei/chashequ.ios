@@ -21,6 +21,8 @@
 @synthesize contentTitleLable = _contentTitleLable;
 @synthesize detailLable;
 @synthesize contentScrollView;
+@synthesize shareContent;
+@synthesize shareView = _shareView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -42,7 +44,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getNewsContent",@"method",self.zixunId,@"id", nil];
     MKNetworkOperation *op = [YMGlobal getOperation:params];
     [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
-       // NSLog(@"zixuncontent%@",[completedOperation responseString]);
+        NSLog(@"zixuncontent%@",[completedOperation responseString]);
         SBJsonParser *parser = [[SBJsonParser alloc]init];
         NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
         if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"])
@@ -50,6 +52,7 @@
             NSMutableDictionary *data = [object objectForKey:@"data"];
             NSString *titleContent = [data objectForKey:@"title"];
             NSString *content = [data objectForKey:@"wap_content"];
+            NSString *weiboUrl = [data objectForKey:@"weiboUrl"];
             if(titleContent)
             {
                 //计算内容所需要的高度
@@ -69,6 +72,8 @@
                 [self.detailLable setBackgroundColor:[UIColor clearColor]];
                 [self.detailLable setTextColor:[UIColor whiteColor]];
                 [self.headerView  addSubview:self.detailLable];
+                //设置分享内容
+                self.shareContent = [titleContent stringByAppendingString:weiboUrl];
             }
             if(content)
             {
@@ -118,8 +123,9 @@
 
 - (void)contentShare:(id)sender
 {
-    SNViewController *snView = [[SNViewController alloc]init];
-    [self.navigationController pushViewController:snView animated:YES];
+//    SNViewController *snView = [[SNViewController alloc]init];
+//    snView.weiboContent = self.shareContent;
+//    [self.navigationController pushViewController:snView animated:YES];
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -140,5 +146,32 @@
 - (void)viewDidUnload {
     [self setContentScrollView:nil];
     [super viewDidUnload];
+}
+
+- (UIView *)shareView
+{
+    _shareView =[[UIView alloc]initWithFrame:CGRectMake(20, 360, 280, 40)];
+    UIButton *sinaShareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sinaShareButton setFrame:CGRectMake(10, 5, 120, 30)];
+    [sinaShareButton setTitle:@"新浪微博" forState:UIControlStateNormal];
+    [sinaShareButton addTarget:self action:@selector(sinaShare:) forControlEvents:UIControlStateNormal];
+    UIButton *tengxunButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [tengxunButton setFrame:CGRectMake(140, 5, 120, 30)];
+    [tengxunButton setTitle:@"腾讯微博" forState:UIControlStateNormal];
+    [tengxunButton addTarget:self action:@selector(tentxunShare:) forControlEvents:UIControlStateNormal];
+    
+    [_shareView addSubview:sinaShareButton];
+    [_shareView addSubview:tengxunButton];
+    return _shareView;
+}
+
+- (void)sinaShare:(id)sender
+{
+    
+}
+
+- (void)tentxunShare:(id)sender
+{
+    
 }
 @end

@@ -28,6 +28,8 @@
 
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 
+@property (strong, nonatomic) NSString *weiboContent;
+
 - (void) addButton;
 
 - (void) addShareView;
