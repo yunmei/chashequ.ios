@@ -717,6 +717,7 @@
         adScrollView.contentSize = CGSizeMake(320, 160);
         adScrollView.pagingEnabled = YES;
         adScrollView.scrollEnabled = YES;
+        [adScrollView setShowsHorizontalScrollIndicator:NO];
         [adScrollView setBackgroundColor:[UIColor grayColor]];
         adScrollView.tag = 101;
     }
