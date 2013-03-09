@@ -50,10 +50,6 @@
     [self.view addSubview:self.btnTab5];
     
     // ScrollView显示
-    UIButton *testBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [testBtn setFrame:CGRectMake(300, 300, 20, 20)];
-    [testBtn addTarget:self action:@selector(goToContent:) forControlEvents:UIControlEventTouchUpInside];
-    [self.tabScrollView addSubview:testBtn];
     [self.tabScrollView addSubview:self.refreshTableView1];
     [self.tabScrollView addSubview:self.refreshTableView2];
     [self.tabScrollView addSubview:self.refreshTableView3];
@@ -155,7 +151,7 @@
 // ScrollViewDidScroll
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.tag == 1) {
+    if (scrollView.tag == 100) {
         int offset = (int)scrollView.contentOffset.x;
         int page = (int)(offset/320) + 1;
         if (offset%320 > 160) {
@@ -190,6 +186,96 @@
                 self.currentTabBtn = self.btnTab5;
                 break;
         }
+    }
+    if (scrollView.tag == 2) {
+        [self.refreshTableView2 tableViewDidDragging];
+    } else if(scrollView.tag == 3) {
+        [self.refreshTableView3 tableViewDidDragging];
+    } else if(scrollView.tag == 4) {
+        [self.refreshTableView4 tableViewDidDragging];
+    } else if(scrollView.tag == 5) {
+        [self.refreshTableView5 tableViewDidDragging];
+    }
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    int state = 0;
+    int countPage = 0;
+    NSString *requestType = @"";
+    if (scrollView.tag == 2) {
+        state = [self.refreshTableView2 tableViewDidEndDragging];
+        countPage = (int)ceil([tab2Array count]/10);
+        requestType = @"52";
+    } else if (scrollView.tag == 3) {
+        state = [self.refreshTableView3 tableViewDidEndDragging];
+        countPage = (int)ceil([tab3Array count]/10);
+        requestType = @"53";
+    } else if (scrollView.tag == 4) {
+        state = [self.refreshTableView4 tableViewDidEndDragging];
+        countPage = (int)ceil([tab4Array count]/10);
+        requestType = @"16";
+    } else if (scrollView.tag == 5) {
+        state = [self.refreshTableView5 tableViewDidEndDragging];
+        countPage = (int)ceil([tab5Array count]/10);
+        requestType = @"54";
+    }
+    if (state == k_RETURN_LOADMORE) {
+        //self.currentPage++;
+        MBProgressHUD *HUD = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"news.getListByType",@"method",requestType,@"type", nil];
+        [params setObject:[NSString stringWithFormat:@"%d", (countPage+1)] forKey:@"page"];
+        NSLog(@"aaaa:%@", params);
+        MKNetworkOperation *op = [YMGlobal getOperation:params];
+        [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+            SBJsonParser *parser = [[SBJsonParser alloc]init];
+            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+            NSMutableDictionary *object = [parser objectWithData:[completedOperation responseData]];
+            if([[object objectForKey:@"errorMessage"]isEqualToString:@"success"]) {
+                tempArray = [object objectForKey:@"data"];
+                if (scrollView.tag == 2) {
+                    for (id o in tempArray) {
+                        [tab2Array addObject:o];
+                    }
+                    if ([tempArray count] < 10) {
+                        [refreshTableView2 reloadData:NO];
+                    } else {
+                        [refreshTableView2 reloadData:YES];
+                    }
+                } else if (scrollView.tag == 3) {
+                    for (id o in tempArray) {
+                        [tab3Array addObject:o];
+                    }
+                    if ([tempArray count] < 10) {
+                        [refreshTableView3 reloadData:NO];
+                    } else {
+                        [refreshTableView3 reloadData:YES];
+                    }
+                } else if (scrollView.tag == 4) {
+                    for (id o in tempArray) {
+                        [tab4Array addObject:o];
+                    }
+                    if ([tempArray count] < 10) {
+                        [refreshTableView4 reloadData:NO];
+                    } else {
+                        [refreshTableView4 reloadData:YES];
+                    }
+                } else if (scrollView.tag == 5) {
+                    for (id o in tempArray) {
+                        [tab5Array addObject:o];
+                    }
+                    if ([tempArray count] < 10) {
+                        [refreshTableView5 reloadData:NO];
+                    } else {
+                        [refreshTableView5 reloadData:YES];
+                    }
+                }
+            }
+            [HUD hide:YES];
+        } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+            NSLog(@"%@",error);
+            [HUD hide:YES];
+        }];
+        [ApplicationDelegate.appEngine enqueueOperation:op];
     }
 }
 
@@ -252,8 +338,10 @@
         if (cell.newsTitleLabel.frame.size.height == 20) {
             [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
             cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
-            [cell.contentView addSubview:cell.newsDescLabel];
+        } else {
+            cell.newsDescLabel.text = @"";
         }
+        [cell.contentView addSubview:cell.newsDescLabel];
         cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
         [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
@@ -279,8 +367,10 @@
         if (cell.newsTitleLabel.frame.size.height == 20) {
             [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
             cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
-            [cell.contentView addSubview:cell.newsDescLabel];
+        } else {
+            cell.newsDescLabel.text = @"";
         }
+        [cell.contentView addSubview:cell.newsDescLabel];
         cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
         [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
@@ -306,8 +396,10 @@
         if (cell.newsTitleLabel.frame.size.height == 20) {
             [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
             cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
-            [cell.contentView addSubview:cell.newsDescLabel];
+        } else {
+            cell.newsDescLabel.text = @"";
         }
+        [cell.contentView addSubview:cell.newsDescLabel];
         cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
         [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
@@ -333,8 +425,10 @@
         if (cell.newsTitleLabel.frame.size.height == 20) {
             [cell.newsDescLabel setFrame:CGRectMake(5, 28, titleLabelWidth, 20)];
             cell.newsDescLabel.text = [tempDictionary objectForKey:@"description"];
-            [cell.contentView addSubview:cell.newsDescLabel];
+        } else {
+            cell.newsDescLabel.text = @"";
         }
+        [cell.contentView addSubview:cell.newsDescLabel];
         cell.newsOtherLabel.text = [NSString stringWithFormat:@"%@　%@　%@", [tempDictionary objectForKey:@"source"],[tempDictionary objectForKey:@"nickname"], [tempDictionary objectForKey:@"create_time"]];
         [cell.contentView addSubview:cell.newsOtherLabel];
         return cell;
@@ -515,7 +609,7 @@
         tabScrollView.contentSize = CGSizeMake(1600, 434);
         tabScrollView.pagingEnabled = YES;
         tabScrollView.scrollEnabled = YES;
-        tabScrollView.tag = 1;
+        tabScrollView.tag = 100;
     }
     return tabScrollView;
 }
