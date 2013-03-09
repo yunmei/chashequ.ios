@@ -9,9 +9,36 @@
 #import <UIKit/UIKit.h>
 #import "SinaWeibo.h"
 #import "SinaWeiboRequest.h"
-
+#import <QuartzCore/QuartzCore.h>
 @interface SNViewController : UIViewController<SinaWeiboDelegate, SinaWeiboRequestDelegate>
-@property (strong, nonatomic) IBOutlet UIButton *login;
-@property (strong, nonatomic) IBOutlet UIButton *logout;
+{
+    UIButton *_shareButton;
+    
+    UITextView *_textView;
+    
+    UIView *_shareView;
+    
+    UIActivityIndicatorView *_indicator;
+}
+@property (strong, nonatomic) UIButton *shareButton;
+
+@property (strong, nonatomic) UITextView *textView;
+
+@property (strong, nonatomic) UIView *shareView;
+
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
+
+- (void) addButton;
+
+- (void) addShareView;
+
+- (void) share:(UIButton*) sender;
+
+- (void) removeShare:(UIButton*) sender;
+
+- (void) sendShare:(UIButton*) sender;
+
+- (void) exitShare:(UIButton*) sender;
+
 
 @end

@@ -59,7 +59,7 @@
 		AA61EEB416E6E97A0027B4C7 /* slide3.png in Resources */ = {isa = PBXBuildFile; fileRef = AA61EEB316E6E97A0027B4C7 /* slide3.png */; };
 		AA61EED616E7310B0027B4C7 /* ZixunContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA61EED416E7310B0027B4C7 /* ZixunContentViewController.m */; };
 		AA61EED716E7310B0027B4C7 /* ZixunContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA61EED516E7310B0027B4C7 /* ZixunContentViewController.xib */; };
-		AA6E39D016E97E9A0060C7E8 /* SNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6E39CE16E97E9A0060C7E8 /* SNViewController.m */; };
+		AA6E39D016E97E9A0060C7E8 /* SNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA6E39CE16E97E9A0060C7E8 /* SNViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AA6E39D116E97E9A0060C7E8 /* SNViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA6E39CF16E97E9A0060C7E8 /* SNViewController.xib */; };
 		AAD7083316E991DC0006D224 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AAD7083216E991DC0006D224 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AAD7083D16E991E00006D224 /* SinaWeibo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AAD7083516E991E00006D224 /* SinaWeibo.bundle */; };
