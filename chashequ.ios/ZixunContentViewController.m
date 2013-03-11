@@ -10,6 +10,7 @@
 #import "YMGlobal.h"
 #import "SBJson.h"
 #import "SNViewController.h"
+
 @interface ZixunContentViewController ()
 
 @end
@@ -26,6 +27,7 @@
 @synthesize textView = _textView;
 @synthesize shareView = _shareView;
 @synthesize indicator = _indicator;
+@synthesize TCWeiboEngine;
 BOOL ISSHARESHOW = NO;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,6 +43,9 @@ BOOL ISSHARESHOW = NO;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.view addGestureRecognizer:self.swipeGesture];
+    TCWBEngine *engine = [[TCWBEngine alloc] initWithAppKey:WiressSDKDemoAppKey andSecret:WiressSDKDemoAppSecret andRedirectUrl:@"http://www.ying7wang7.com"];
+    [engine setRootViewController:self];
+    self.TCWeiboEngine = engine;
     //生成头部绿色背景
     self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0,0,320, 120)];
     [self.headerView setBackgroundColor:[UIColor colorWithRed:61.0/255.0 green:157.0/255.0 blue:1.0/255.0 alpha:1.0]];
@@ -182,7 +187,7 @@ BOOL ISSHARESHOW = NO;
     return _shareViewBar;
 }
 
-//点击新浪分享
+//点击新浪微博分享
 - (void)sinaShare:(id)sender
 {
     SinaWeibo *sinaWeibo = [self sinaWeibo];
@@ -200,9 +205,10 @@ BOOL ISSHARESHOW = NO;
     }
 }
 
+//点击腾讯微博分享
 - (void)tentxunShare:(id)sender
 {
-    
+    [self shareTCWeibo];
 }
 
 //以下所有内容为新浪微博分享部分
@@ -323,4 +329,42 @@ BOOL ISSHARESHOW = NO;
     [_shareView addSubview:_textView];
 }
 
+- (void)shareTCWeibo
+{
+
+    [self.TCWeiboEngine UIBroadCastMsgWithContent:self.shareContent
+                                       andImage:nil
+                                    parReserved:nil
+                                       delegate:self
+                                    onPostStart:@selector(postStart)
+                                  onPostSuccess:@selector(createSuccess:)
+                                  onPostFailure:@selector(createFail:)];
+    
+}
+
+//腾讯微博登录成功回调
+- (void)createSuccess:(NSDictionary *)dict {
+    NSLog(@"%s %@", __FUNCTION__,dict);
+    if ([[dict objectForKey:@"ret"] intValue] == 0) {
+        [self showAlertMessage:@"发送成功！"];
+    }else {
+        [self showAlertMessage:@"发送失败！"];
+    }
+}
+
+//腾讯微博登录失败回调
+- (void)createFail:(NSError *)error {
+    NSLog(@"error is %@",error);
+    [self showAlertMessage:@"发送失败！"];
+}
+
+- (void)showAlertMessage:(NSString *)msg {
+    UIAlertView* alertView = [[UIAlertView alloc]initWithTitle:nil
+                                                       message:msg
+                                                      delegate:self
+                                             cancelButtonTitle:@"确定"
+                                             otherButtonTitles:nil];
+    [alertView show];
+    
+}
 @end

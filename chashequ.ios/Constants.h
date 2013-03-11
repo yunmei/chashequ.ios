@@ -16,3 +16,6 @@
 #define WEIBO_APPKEY    @"3201194191"
 #define WEIBO_APPSECRETE @"0334252914651e8f76bad63337b3b78f"
 #define WEIBO_REDIRECTURL @"http://appgo.cn"
+#define TCWEIBO_APPKEY    @"801307650"
+#define TCWEIBO_APPSECRETE @"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+#define TCWEIBO_REDIRECTURL @"http://www.sharesdk.cn"
